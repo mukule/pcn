@@ -21,12 +21,12 @@ def dashboard(request):
     total_subcounties = Subcounty.objects.count()
     total_counties = County.objects.count()
 
-    # Calculate percentages
-    stage1_percentage = (stage1_count / total_subcounties) * 100
-    stage2_percentage = (stage2_count / total_subcounties) * 100
-    stage3_percentage = (stage3_count / total_subcounties) * 100
-    stage4_percentage = (stage4_count / total_subcounties) * 100
-    stage0_percentage = (counties_not_in_stages_count / total_counties) * 100
+    # Calculate percentages with two decimal places
+    stage1_percentage = '{:.2f}'.format((stage1_count / total_subcounties) * 100)
+    stage2_percentage = '{:.2f}'.format((stage2_count / total_subcounties) * 100)
+    stage3_percentage = '{:.2f}'.format((stage3_count / total_subcounties) * 100)
+    stage4_percentage = '{:.2f}'.format((stage4_count / total_subcounties) * 100)
+    stage0_percentage = '{:.2f}'.format((counties_not_in_stages_count / total_counties) * 100)
 
     context = {
         'total_subcounties': total_subcounties,
