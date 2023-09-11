@@ -11,11 +11,12 @@ class CountyForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
            
         }
+
 class SubcountyForm(forms.ModelForm):
-    partners = forms.ModelChoiceField(
+    partners = forms.ModelMultipleChoiceField(
         queryset=Partners.objects.all(),
         required=False,  # Make it optional
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
     )
 
     class Meta:
@@ -25,6 +26,7 @@ class SubcountyForm(forms.ModelForm):
             'county': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
 
 
 

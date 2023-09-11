@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'main/base1.html' %}
 {% load static %}
 
 {% block content %}
@@ -12,50 +12,145 @@
             </div>
         </div> 
         
-         <div class="row">
-           <div class="col-lg-3">
-           <a href="{% url 'main:hero' %}">
-            <section class="card">
-                <img src="{% static 'dashboard/images/users/users.png' %}" class="card-img" alt="...">
-                <div class="card-img-overlay d-flex align-items-center justify-content-center">
-                  <h2 class="card-title text-white">Home</h2>
-                </div>
-              </section>  
-           </a>            
-        </div>
-        <div class="col-lg-3">
-            <a href="{% url 'main:seniors' %}">
-             <section class="card">
-                 <img src="{% static 'dashboard/images/users/users.png' %}" class="card-img" alt="...">
-                 <div class="card-img-overlay d-flex align-items-center justify-content-center">
-                   <h2 class="card-title text-white">Senior Management</h2>
-                 </div>
-               </section>  
-            </a>            
-         </div>
-         <div class="col-lg-3">
-            <a href="{% url 'main:companies' %}">
-             <section class="card">
-                 <img src="{% static 'dashboard/images/users/users.png' %}" class="card-img" alt="...">
-                 <div class="card-img-overlay d-flex align-items-center justify-content-center">
-                   <h2 class="card-title text-white">Companies</h2>
-                 </div>
-               </section>  
-            </a>            
-         </div>
+        
+        <div class="row">
+          <div class="col-md-6 col-xl-2">
+              <div class="card bg-primary border-primary">
+                  <div class="card-body">
+                      <div class="mb-4">
+                          <h5 class="card-title mb-0 text-white">Total PCNs</h5>
+                      </div>
+                      <div class="row d-flex align-items-center mb-4">
+                          <div class="col-8">
+                              <h2 class="d-flex align-items-center mb-0 text-white">
+                                  {{ total_subcounties }}
+                              </h2>
+                          </div>
+                      </div>
 
-         <div class="col-lg-3">
-            <a href="{% url 'main:events' %}">
-             <section class="card">
-                 <img src="{% static 'dashboard/images/users/users.png' %}" class="card-img" alt="...">
-                 <div class="card-img-overlay d-flex align-items-center justify-content-center">
-                   <h2 class="card-title text-white">Events</h2>
-                 </div>
-               </section>  
-            </a>            
-         </div>
-        </div>
-        <!-- end row -->
+                  </div>
+              </div>
+          </div> <!-- end col-->
+
+          <div class="col-md-6 col-xl-2">
+              <div class="card bg-success border-success">
+                  <div class="card-body">
+                      <div class="mb-4">
+                          <h5 class="card-title mb-0 text-white">Stage 4</h5>
+                      </div>
+                      <div class="row d-flex align-items-center mb-4">
+                          <div class="col-6">
+                              <h2 class="d-flex align-items-center text-white mb-0">
+                                  {{ stage4 }}
+                              </h2>
+                          </div>
+                          <div class="col-6 text-right">
+                              <span class="text-white-50">{{ stage4_percentage }} % </i></span>
+                          </div>
+                      </div>
+
+                      <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage4_percentage }}%;"></div>
+                      </div>
+                  </div>
+              </div>
+          </div> <!-- end col-->
+
+          <div class="col-md-6 col-xl-2">
+              <div class="card bg-warning border-warning">
+                  <div class="card-body">
+                      <div class="mb-4">
+                          <h5 class="card-title mb-0 text-white">Stage 3</h5>
+                      </div>
+                      <div class="row d-flex align-items-center mb-4">
+                          <div class="col-6">
+                              <h2 class="d-flex align-items-center text-white mb-0">
+                                  {{ stage3 }}
+                              </h2>
+                          </div>
+                          <div class="col-6 text-right">
+                              <span class="text-white-50">{{ stage3_percentage}} %</i></span>
+                          </div>
+                      </div>
+
+                      <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage3_percentage }}%;"></div>
+                      </div>
+                  </div>
+              </div>
+          </div> <!-- end col-->
+
+          <div class="col-md-6 col-xl-2">
+              <div class="card bg-info border-info">
+                  <div class="card-body">
+                      <div class="mb-4">
+                          <h5 class="card-title mb-0 text-white">Stage 2</h5>
+                      </div>
+                      <div class="row d-flex align-items-center mb-4">
+                          <div class="col-6">
+                              <h2 class="d-flex align-items-center text-white mb-0">
+                                  {{ stage2 }}
+                              </h2>
+                          </div>
+                          <div class="col-6 text-right">
+                              <span class="text-white-50">{{ stage2_percentage }} %</span>
+                          </div>
+                      </div>
+
+                      <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage2_percentage }}%;"></div>
+                      </div>
+                  </div>
+              </div>
+          </div> <!-- end col-->
+          <div class="col-md-6 col-xl-2">
+            <div class="card bg-warning border-warning">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0 text-white">Stage 1</h5>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <div class="col-6">
+                            <h2 class="d-flex align-items-center text-white mb-0">
+                                {{ stage1 }}
+                            </h2>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span class="text-white-50">{{ stage1_percentage }} %</span>
+                        </div>
+                    </div>
+
+                    <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                        <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage1_percentage }}%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col-->
+
+        <div class="col-md-6 col-xl-2">
+          <div class="card bg-danger border-danger">
+              <div class="card-body">
+                  <div class="mb-4">
+                      <h5 class="card-title mb-0 text-white">Not Started</h5>
+                  </div>
+                  <div class="row d-flex align-items-center mb-4">
+                      <div class="col-6">
+                          <h2 class="d-flex align-items-center text-white mb-0">
+                              {{ stage0 }}
+                          </h2>
+                      </div>
+                      <div class="col-6 text-right">
+                          <span class="text-white-50"> {{ stage0_percentage }} %</span>
+                      </div>
+                  </div>
+
+                  <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                      <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage0_percentage }}%;"></div>
+                  </div>
+              </div>
+          </div>
+      </div> <!-- end col-->
+      </div>
 
     </div>
 </div>

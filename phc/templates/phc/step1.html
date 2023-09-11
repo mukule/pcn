@@ -1,0 +1,62 @@
+{% extends 'main/base1.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h3 class="mb-0 font-size-18">Super Admin Dashboard</h3>
+                </div>
+            </div>
+        </div> 
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h3 class="mb-0 font-size-18">{{ subcounty.name }} - Step 1 Progress</h3>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        {% if step1 %}
+                        <h4 class="card-title">Step 1 Progress</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Indicator Description</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Has CHMT meeting taken place?</td>
+                                    <td>{% if step1.chmt_meeting %}Yes{% else %}No{% endif %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Has the SCHMT & HF staff meeting taken place?</td>
+                                    <td>{% if step1.schmt_hf_staff_meeting %}Yes{% else %}No{% endif %}</td>
+                                </tr>
+                                <!-- Add more fields as needed -->
+                            </tbody>
+                        </table>
+                        <div class="col-12 text-center">
+                            <a href="{% url 'phc:create_step1' subcounty_id=subcounty.id %}" class="btn btn-primary">Update Step 1 status</a>
+                        </div>
+                        {% else %}
+                        <p>No Step 1 details available for this subcounty.</p>
+                        <div class="col-12 text-center">
+                            <a href="{% url 'phc:create_step1' subcounty_id=subcounty.id %}" class="btn btn-primary">Create Step 1 status</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    
+                </div>
+                <a href="{% url 'phc:subcounties' %}" class="btn btn-primary">Back to Subcounties</a>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+{% endblock content %}

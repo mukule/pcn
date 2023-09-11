@@ -19,28 +19,48 @@
                     <h3 class="mb-0 font-size-18">All Subcounties</h3>
                 </div>
                 {% if subcounties %}
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Action</th> <!-- Add the Action column -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for subcounty in subcounties %}
-                            <tr>
-                                <td>{{ subcounty.id }}</td>
-                                <td>{{ subcounty.name }}</td>
-                                <td>
-                                    <a href="{% url 'phc:edit_subcounty' county_id=subcounty.county.id subcounty_id=subcounty.id %}">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Partners</th>
+                            <th>Deployment</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subcounty in subcounties %}
+                        <tr>
+                            <td>{{ subcounty.id }}</td>
+                            <td>
+                                {{ subcounty.name }}
+                            </td>
+                            <td>
+                                {% if subcounty.partners.exists %}
+                                    {% for partner in subcounty.partners.all %}
+                                        {{ partner.name }}
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    No partners added
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'phc:subcounty' subcounty_id=subcounty.id %}">
+                                    Update Response
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'phc:edit_subcounty' county_id=subcounty.county.id subcounty_id=subcounty.id %}">
+                                    Update Partners
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
                     
                     <div class="pagination">
                         <span class="step-links">

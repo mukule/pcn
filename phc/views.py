@@ -43,6 +43,7 @@ def create_subcounty(request, county_id):
     return render(request, 'phc/create_subcounty.html', {'form': form, 'county': county})
 
 
+
 def edit_subcounty(request, county_id, subcounty_id):
     county = get_object_or_404(County, pk=county_id)
     subcounty = get_object_or_404(Subcounty, pk=subcounty_id)
@@ -52,13 +53,15 @@ def edit_subcounty(request, county_id, subcounty_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Subcounty updated successfully.')
-            return redirect('phc:county_detail', county_id=county_id)
+            # Redirect back to the same subcounty detail page
+            return redirect('phc:subcounties')
         else:
             messages.error(request, 'Error updating subcounty. Please check the form.')
     else:
         form = SubcountyForm(instance=subcounty)
     
     return render(request, 'phc/edit_subcounty.html', {'form': form, 'county': county, 'subcounty': subcounty})
+
 
 def counties(request):
     counties_list = County.objects.all()
@@ -99,3 +102,80 @@ def partners(request):
     page = request.GET.get('page')
     partners = paginator.get_page(page)
     return render(request, 'phc/partners.html', {'partners': partners})
+
+
+
+def subcounty(request, subcounty_id):
+    subcounty = get_object_or_404(Subcounty, pk=subcounty_id)
+    return render(request, 'phc/subcounty.html', {'subcounty': subcounty})
+
+
+def indicator(request, subcounty_id, field_name):
+    subcounty = get_object_or_404(Subcounty, pk=subcounty_id)
+    
+    # Ensure that the field_name provided is a valid boolean field
+    boolean_fields = [
+        "chmt_meeting",
+        "schmt_hf_staff_meeting",
+        "health_facility_assessments",
+        "client_exit_surveys",
+        "chu_functionality_assessments",
+        "mapping_hubs_spokes",
+        "training_mdt",
+        "customised_performance_indicators",
+        "set_phc_interventions",
+        "dispensarization",
+        "multi_stakeholder_engagement",
+        "mdt_roving_healthcare_provision",
+        "support_supervision_mentorships",
+        "m_e_learning_scale",
+    ]
+    
+    if field_name not in boolean_fields:
+        return redirect('phc:subcounty', subcounty_id=subcounty.id)  # Redirect back to subcounty if invalid field
+    
+    # Toggle the boolean field
+    setattr(subcounty, field_name, not getattr(subcounty, field_name))
+    subcounty.save()
+    
+    # Check the values of the step fields for each stage and update the stage fields accordingly
+    stage1_fields = [
+        "chmt_meeting",
+        "schmt_hf_staff_meeting",
+    ]
+    stage2_fields = [
+        "health_facility_assessments",
+        "client_exit_surveys",
+        "chu_functionality_assessments",
+    ]
+    stage3_fields = [
+        "mapping_hubs_spokes",
+        "training_mdt",
+        "customised_performance_indicators",
+        "set_phc_interventions",
+    ]
+    stage4_fields = [
+        "dispensarization",
+        "multi_stakeholder_engagement",
+        "mdt_roving_healthcare_provision",
+        "support_supervision_mentorships",
+        "m_e_learning_scale",
+    ]
+    
+    # Check if all step fields in a stage are True and update the corresponding stage field
+    subcounty.stage1 = all(getattr(subcounty, field) for field in stage1_fields)
+    subcounty.stage2 = all(getattr(subcounty, field) for field in stage2_fields)
+    subcounty.stage3 = all(getattr(subcounty, field) for field in stage3_fields)
+    subcounty.stage4 = all(getattr(subcounty, field) for field in stage4_fields)
+    
+    # Calculate the progress based on stages completion (each stage is 25%)
+    completed_stages = sum(
+        getattr(subcounty, stage) for stage in ["stage1", "stage2", "stage3", "stage4"]
+    )
+    progress = completed_stages * 25
+    
+    subcounty.progress = progress
+    subcounty.save()
+    
+    return redirect('phc:subcounty', subcounty_id=subcounty.id)  # Redirect back to subcounty view
+
