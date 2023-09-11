@@ -1,0 +1,71 @@
+<!-- county_list.html -->
+
+{% extends 'main/base1.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h3 class="mb-0 font-size-18">Super Admin Dashboard</h3>
+                </div>
+            </div>
+        </div> 
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h3 class="mb-0 font-size-18">{{county.name}} County</h3>
+                </div>
+                {% if subcounties %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for county in subcounties %}
+                            <tr>
+                                <td>{{ county.id }}</td>
+                                <td><a href="{% url 'phc:county_detail' county.id %}">{{ county.name }}</a></td> <!-- Make the county name a clickable link -->
+                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if counties.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ counties.previous_page_number }}">previous</a>
+                            {% endif %}
+                            
+                            <span class="current-page">
+                                Page {{ counties.number }} of {{ counties.paginator.num_pages }}.
+                            </span>
+                            
+                            {% if counties.has_next %}
+                                <a href="?page={{ counties.next_page_number }}">next</a>
+                                <a href="?page={{ counties.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% else %}
+                    <p>We have not Created Subcounties in {{county.name}} County Yet, Add them</p>
+                {% endif %}
+                <div class="col-12 text-center">
+                    <a href="{% url 'phc:create_subcounty' county.id %}" class="btn btn-primary">Add Subcounty</a>
+                </div>
+                
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,70 @@
+<!-- subcounties.html -->
+{% extends 'main/base1.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h3 class="mb-0 font-size-18">Super Admin Dashboard</h3>
+                </div>
+            </div>
+        </div> 
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h3 class="mb-0 font-size-18">All Subcounties</h3>
+                </div>
+                {% if subcounties %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Action</th> <!-- Add the Action column -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subcounty in subcounties %}
+                            <tr>
+                                <td>{{ subcounty.id }}</td>
+                                <td>{{ subcounty.name }}</td>
+                                <td>
+                                    <a href="{% url 'phc:edit_subcounty' county_id=subcounty.county.id subcounty_id=subcounty.id %}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if subcounties.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ subcounties.previous_page_number }}">previous</a>
+                            {% endif %}
+                            
+                            <span class="current-page">
+                                Page {{ subcounties.number }} of {{ subcounties.paginator.num_pages }}.
+                            </span>
+                            
+                            {% if subcounties.has_next %}
+                                <a href="?page={{ subcounties.next_page_number }}">next</a>
+                                <a href="?page={{ subcounties.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% else %}
+                    <p>We have not created any subcounties yet. Add them.</p>
+                {% endif %}
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+{% endblock content %}

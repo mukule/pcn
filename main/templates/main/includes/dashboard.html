@@ -1,0 +1,45 @@
+{% load static %}
+<header id="page-topbar">
+    <div class="navbar-header">
+        <!-- LOGO -->
+        <div class="navbar-brand-box d-flex align-items-left">
+            <div class="navbar-brand-box d-flex align-items-left">
+                <div class="navbar-brand-box d-flex align-items-left">
+                    <a href="/" class="logo">
+                       <img src="{% static 'main/images/logo.png' %}" alt="logo">
+                    </a>
+                </div>
+    
+             
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+
+          
+            <button type="button" class="btn btn-sm mr-2 font-size-16 d-lg-none header-item waves-effect waves-light" data-toggle="collapse" data-target="#topnav-menu-content">
+                <i class="fa fa-fw fa-bars"></i>
+            </button>
+            
+        </div>
+    </div>
+</header>
+
+
+<div class="topnav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+            
+            <div class="collapse navbar-collapse" id="topnav-menu-content">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="mdi mdi-view-dashboard mr-2"></i>Dashboard
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>   

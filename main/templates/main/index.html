@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero-section" style="background-image: url('{% static 'main/images/media/sm-7.jpg' %}'); position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);"></div>
+    <div class="row text-center text-white mt-4" style="position: relative; z-index: 1; color: #fff;">
+        <div class="col-8">
+            <h1 class="display-4 font-weight-bold text-white">Welcome to the Real Time Tracking System</h1>
+           
+            <h2 class="font-weight-bold mt-4 text-white">Primary Care Networks (PCNs)</h2>
+            
+            <a href="{% url 'phc:index' %}" class="btn btn-lg btn-primary mt-4">Customized Reports</a>
+            <a href="" class="btn btn-lg btn-primary mt-4">Data Managers Account</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
