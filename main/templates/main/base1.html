@@ -102,6 +102,42 @@ var myChart = new Chart(ctx, {
 
 </script>
 
+<!-- Add an HTML canvas element for the pie chart -->
+
+
+<script>
+    var stageNames = JSON.parse('{{ stage_names|safe }}');
+    var stageCounts = JSON.parse('{{ stage_counts|safe }}');
+
+    // Define an array of custom color codes for each stage
+    var stageColors = [
+        '#FF5733',   // Stage 1 (Red)
+        '#007BFF',   // Stage 2 (Blue)
+        '#FFC107',   // Stage 3 (Yellow)
+        '#28A745'    // Stage 4 (Green)
+    ];
+
+    // Create the Chart.js pie chart
+    var ctx = document.getElementById('stagePieChart').getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: stageNames,
+            datasets: [{
+                data: stageCounts,
+                backgroundColor: stageColors
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: true,
+                position: 'right'
+            }
+        }
+    });
+</script>
 
 </body>
 </html>
