@@ -151,6 +151,68 @@
           </div>
       </div> <!-- end col-->
       </div>
+      <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">PCNs ACTION</h4>
+                    <p class="card-subtitle mb-4">
+                     The table Below summerizes the PDNs Progress in Kenya
+                    </p>
+
+                    <table id="complex-header-datatable" class="table table-bordered dt-responsive nowrap">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>County</th>
+                                <th>Stage 4</th>
+                                <th>Stage 3</th>
+                                <th>Stage 2</th>
+                                <th>Stage 1</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for county in page_counties %}
+                            <tr>
+                                <td>{{ county.id }}</td>
+                                <td>{{ county.name }}</td>
+                                <td>{{ county.stage4 }}</td>
+                                <td>{{ county.stage3 }}</td>
+                                <td>{{ county.stage2 }}</td>
+                                <td>{{ county.stage1 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination pagination-lg">
+                        <span class="step-links">
+                            {% if page_counties.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ page_counties.previous_page_number }}">previous</a>
+                            {% endif %}
+                    
+                            <span class="current-page">{{ page_counties.number }}</span>
+                    
+                            {% if page_counties.has_next %}
+                                <a href="?page={{ page_counties.next_page_number }}">next</a>
+                                <a href="?page={{ page_counties.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                </div> <!-- end card body-->
+            </div> <!-- end card -->
+        </div><!-- end col-->
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="stageChart" width="400" height="650"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row-->
 
     </div>
 </div>

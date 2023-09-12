@@ -62,5 +62,46 @@
     </script>
     
 
+    <!-- Add this to your HTML template -->
+
+<script>
+  
+  var stageNames = JSON.parse('{{ stage_names|safe }}');
+var stageCounts = JSON.parse('{{ stage_counts|safe }}');
+
+// Define an array of custom color codes for each stage
+var stageColors = [
+    '#FF5733',   // Stage 1 (Red)
+    '#007BFF',   // Stage 2 (Blue)
+    '#FFC107',   // Stage 3 (Yellow)
+    '#28A745'    // Stage 4 (Green)
+];
+
+// Create the Chart.js bar graph
+var ctx = document.getElementById('stageChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: stageNames,
+        datasets: [{
+            label: 'Number of PCNs',
+            data: stageCounts,
+            backgroundColor: stageColors,
+            borderColor: stageColors, // Use the same color for borders if needed
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
+
+
 </body>
 </html>
