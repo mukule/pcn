@@ -100,3 +100,27 @@ def dashboard(request):
     }
 
     return render(request, 'main/dashboard.html', context)
+
+
+def toggle_subcounty_stages(request):
+    if request.method == 'POST':
+        new_stage_value = request.POST.get('new_stage_value')
+
+        try:
+            # Convert the new stage value to a boolean
+            new_stage_value = bool(int(new_stage_value))
+
+            # Update all Subcounties with the new stage value
+            Subcounty.objects.update(
+                stage1=new_stage_value,
+                stage2=new_stage_value,
+                stage3=new_stage_value,
+                stage4=new_stage_value
+            )
+
+            return redirect('main:magic')  # Redirect to the Subcounty list view
+        except ValueError:
+            pass
+
+    return render(request, 'main/toggle_stages.html')
+

@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="new_stage_value" value="1">Set all stages to True</button>
+                    <button type="submit" name="new_stage_value" value="0">Set all stages to False</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
