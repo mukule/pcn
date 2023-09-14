@@ -13,35 +13,40 @@
         </div> 
         
         
-        <div class="row">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6 col-xl-2">
+                <div class="card bg-secondary border-secondary">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0 text-white">Total PCNs</h5>
+                        </div>
+                        <div class="row d-flex align-items-center mb-4">
+                            <div class="col-6">
+                                <h2 class="d-flex align-items-center text-white mb-0">
+                                    {{ pcns }}
+                                </h2>
+                            </div>
+                            <div class="col-6 text-right">
+                                <span class="text-white-50">{{ stage1_percentage }} %</span>
+                            </div>
+                        </div>
+    
+                        <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                            <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage1_percentage }}%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end col-->
           <div class="col-md-6 col-xl-2">
-              <div class="card bg-primary border-primary">
+              <div class="card bg-info border-info">
                   <div class="card-body">
                       <div class="mb-4">
-                          <h5 class="card-title mb-0 text-white">Total PCNs</h5>
-                      </div>
-                      <div class="row d-flex align-items-center mb-4">
-                          <div class="col-8">
-                              <h2 class="d-flex align-items-center mb-0 text-white">
-                                  {{ total_subcounties }}
-                              </h2>
-                          </div>
-                      </div>
-
-                  </div>
-              </div>
-          </div> <!-- end col-->
-
-          <div class="col-md-6 col-xl-2">
-              <div class="card bg-success border-success">
-                  <div class="card-body">
-                      <div class="mb-4">
-                          <h5 class="card-title mb-0 text-white">Stage 4</h5>
+                          <h5 class="card-title mb-0 text-white">Partner Support</h5>
                       </div>
                       <div class="row d-flex align-items-center mb-4">
                           <div class="col-6">
                               <h2 class="d-flex align-items-center text-white mb-0">
-                                  {{ stage4 }}
+                                  {{ pcn_with_partners }}
                               </h2>
                           </div>
                           <div class="col-6 text-right">
@@ -57,39 +62,15 @@
           </div> <!-- end col-->
 
           <div class="col-md-6 col-xl-2">
-              <div class="card bg-warning border-warning">
+              <div class="card bg-success border-success">
                   <div class="card-body">
                       <div class="mb-4">
-                          <h5 class="card-title mb-0 text-white">Stage 3</h5>
+                          <h5 class="card-title mb-0 text-white">Fully Established</h5>
                       </div>
                       <div class="row d-flex align-items-center mb-4">
                           <div class="col-6">
                               <h2 class="d-flex align-items-center text-white mb-0">
-                                  {{ stage3 }}
-                              </h2>
-                          </div>
-                          <div class="col-6 text-right">
-                              <span class="text-white-50">{{ stage3_percentage}} %</i></span>
-                          </div>
-                      </div>
-
-                      <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage3_percentage }}%;"></div>
-                      </div>
-                  </div>
-              </div>
-          </div> <!-- end col-->
-
-          <div class="col-md-6 col-xl-2">
-              <div class="card bg-info border-info">
-                  <div class="card-body">
-                      <div class="mb-4">
-                          <h5 class="card-title mb-0 text-white">Stage 2</h5>
-                      </div>
-                      <div class="row d-flex align-items-center mb-4">
-                          <div class="col-6">
-                              <h2 class="d-flex align-items-center text-white mb-0">
-                                  {{ stage2 }}
+                                  {{ pcn_fully_established }}
                               </h2>
                           </div>
                           <div class="col-6 text-right">
@@ -107,12 +88,12 @@
             <div class="card bg-warning border-warning">
                 <div class="card-body">
                     <div class="mb-4">
-                        <h5 class="card-title mb-0 text-white">Stage 1</h5>
+                        <h5 class="card-title mb-0 text-white">In Process</h5>
                     </div>
                     <div class="row d-flex align-items-center mb-4">
                         <div class="col-6">
                             <h2 class="d-flex align-items-center text-white mb-0">
-                                {{ stage1 }}
+                                {{ pcn_in_progress }}
                             </h2>
                         </div>
                         <div class="col-6 text-right">
@@ -136,7 +117,7 @@
                   <div class="row d-flex align-items-center mb-4">
                       <div class="col-6">
                           <h2 class="d-flex align-items-center text-white mb-0">
-                              {{ stage0 }}
+                              {{ pcn_not_started }}
                           </h2>
                       </div>
                       <div class="col-6 text-right">

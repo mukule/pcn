@@ -26,77 +26,27 @@ def determine_county_stage(county):
 
 
 def dashboard(request):
-    # Define a Q object that combines all the Step fields with the AND operator
-    all_step_fields_condition = Q(
-        chmt_meeting=False,
-        schmt_hf_staff_meeting=False,
-        health_facility_assessments=False,
-        client_exit_surveys=False,
-        chu_functionality_assessments=False,
-        mapping_hubs_spokes=False,
-        training_mdt=False,
-        customised_performance_indicators=False,
-        set_phc_interventions=False,
-        dispensarization=False,
-        multi_stakeholder_engagement=False,
-        mdt_roving_healthcare_provision=False,
-        support_supervision_mentorships=False,
-        m_e_learning_scale=False
-    )
-
-    # Count the number of Subcounty instances where none of the Step fields are True
-    subcounties_without_true_steps_count = Subcounty.objects.filter(all_step_fields_condition).count()
-
-    # Count the number of subcounties in each stage
-    stage1_count = Subcounty.objects.filter(stage1=True).count()
-    stage2_count = Subcounty.objects.filter(stage2=True).count()
-    stage3_count = Subcounty.objects.filter(stage3=True).count()
-    stage4_count = Subcounty.objects.filter(stage4=True).count()
-
+    # Retrieve the total number of subcounties
     total_subcounties = Subcounty.objects.count()
 
-    # Calculate percentages with two decimal places
-    stage1_percentage = '{:.2f}'.format((stage1_count / total_subcounties) * 100)
-    stage2_percentage = '{:.2f}'.format((stage2_count / total_subcounties) * 100)
-    stage3_percentage = '{:.2f}'.format((stage3_count / total_subcounties) * 100)
-    stage4_percentage = '{:.2f}'.format((stage4_count / total_subcounties) * 100)
-    stage0_percentage = '{:.2f}'.format((subcounties_without_true_steps_count / total_subcounties) * 100)
+    # Retrieve the count of subcounties with status 0 (Not Started)
+    not_started_count = Subcounty.objects.filter(status=0).count()
 
-    # Prepare data for the chart
-    stage_names = ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4']
-    stage_counts = [stage1_count, stage2_count, stage3_count, stage4_count]
+    # Retrieve the count of subcounties with status 1 (In Progress)
+    in_progress_count = Subcounty.objects.filter(status=1).count()
 
-    # Paginate the counties by 10 per page
-    counties = County.objects.annotate(
-        total_subcounty_progress=Sum('subcounty__progress')
-    ).order_by('id')
+    # Retrieve the count of subcounties with status 2 (Fully Established)
+    fully_established_count = Subcounty.objects.filter(status=2).count()
 
-    paginator = Paginator(counties, 10)
-    page_number = request.GET.get('page')
-    page_counties = paginator.get_page(page_number)
-
-    # Determine the stage for each county
-    county_stages = {county.name: determine_county_stage(county) for county in counties}
-
-   
+    # Retrieve the count of subcounties with partners
+    subcounties_with_partners_count = Subcounty.objects.annotate(partner_count=Count('partners')).filter(partner_count__gt=0).count()
 
     context = {
-        'total_subcounties': total_subcounties,
-        'stage1': stage1_count,
-        'stage1_percentage': stage1_percentage,
-        'stage2': stage2_count,
-        'stage2_percentage': stage2_percentage,
-        'stage3': stage3_count,
-        'stage3_percentage': stage3_percentage,
-        'stage4': stage4_count,
-        'stage4_percentage': stage4_percentage,
-        'stage0': subcounties_without_true_steps_count,
-        'stage0_percentage': stage0_percentage,
-        'page_counties': page_counties,  # Pass the paginated counties to the template
-        'stage_names': json.dumps(stage_names),  # Convert to JSON for JavaScript
-        'stage_counts': json.dumps(stage_counts),  # Convert to JSON for JavaScript
-        'county_stages': county_stages,  # Pass the county stages to the template
-       
+        'pcns': total_subcounties,
+        'pcn_not_started': not_started_count,
+        'pcn_in_progress': in_progress_count,
+        'pcn_fully_established': fully_established_count,
+        'pcn_with_partners': subcounties_with_partners_count,
     }
 
     return render(request, 'main/dashboard.html', context)

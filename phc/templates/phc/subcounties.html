@@ -24,8 +24,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Partners</th>
-                            <th>Deployment</th>
+                            <th>Implementing Partners</th>
+                            <th>status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -47,13 +47,16 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'phc:subcounty' subcounty_id=subcounty.id %}">
-                                    Update Response
-                                </a>
-                            </td>
+                                {% if subcounty.status == 0 %}
+                                Not Started
+                              {% elif subcounty.status == 1 %}
+                                In Progress
+                              {% elif subcounty.status == 2 %}
+                                Fully Established
+                              {% endif %}
                             <td>
-                                <a href="{% url 'phc:edit_subcounty' county_id=subcounty.county.id subcounty_id=subcounty.id %}">
-                                    Update Partners
+                                <a class="btn btn-lg btn-danger" href="{% url 'phc:edit_subcounty' county_id=subcounty.county.id subcounty_id=subcounty.id %}">
+                                    Update Status/Patners
                                 </a>
                             </td>
                         </tr>

@@ -15,18 +15,18 @@ class CountyForm(forms.ModelForm):
 class SubcountyForm(forms.ModelForm):
     partners = forms.ModelMultipleChoiceField(
         queryset=Partners.objects.all(),
-        required=False,  # Make it optional
+        required=False,
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
     )
 
     class Meta:
         model = Subcounty
-        fields = ['county', 'name', 'partners']  # Include the 'partners' field
+        fields = ['county', 'name', 'partners', 'status']
         widgets = {
             'county': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),  # Add widget for the 'status' field
         }
-
 
 
 

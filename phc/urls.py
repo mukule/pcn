@@ -15,6 +15,6 @@ urlpatterns = [
     path('create-partner/', views.create_partner, name='create_partner'),
     path('edit-subcounty/<int:county_id>/<int:subcounty_id>/', views.edit_subcounty, name='edit_subcounty'),
     path('subcounties/<int:subcounty_id>/', views.subcounty, name='subcounty'),
-    path('indicator/<int:subcounty_id>/<str:field_name>/', views.indicator, name='indicator'),
+   
    
 ]
