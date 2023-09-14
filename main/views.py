@@ -8,6 +8,23 @@ def index(request):
     return render(request, 'main/index.html')
 
 
+from django.db.models import Q, F, Sum
+
+def determine_county_stage(county):
+    progress = county.progress
+    if progress is not None:
+        if progress == 0.00:
+            return 'Not Started'
+        elif 0.01 <= progress <= 25:
+            return 'Stage 1'
+        elif progress <= 50:
+            return 'Stage 2'
+        elif progress <= 75:
+            return 'Stage 3'
+    return 'Stage 4'
+
+
+
 def dashboard(request):
     # Define a Q object that combines all the Step fields with the AND operator
     all_step_fields_condition = Q(
@@ -50,10 +67,18 @@ def dashboard(request):
     stage_counts = [stage1_count, stage2_count, stage3_count, stage4_count]
 
     # Paginate the counties by 10 per page
-    counties = County.objects.all()
+    counties = County.objects.annotate(
+        total_subcounty_progress=Sum('subcounty__progress')
+    ).order_by('id')
+
     paginator = Paginator(counties, 10)
     page_number = request.GET.get('page')
     page_counties = paginator.get_page(page_number)
+
+    # Determine the stage for each county
+    county_stages = {county.name: determine_county_stage(county) for county in counties}
+
+   
 
     context = {
         'total_subcounties': total_subcounties,
@@ -70,6 +95,8 @@ def dashboard(request):
         'page_counties': page_counties,  # Pass the paginated counties to the template
         'stage_names': json.dumps(stage_names),  # Convert to JSON for JavaScript
         'stage_counts': json.dumps(stage_counts),  # Convert to JSON for JavaScript
+        'county_stages': county_stages,  # Pass the county stages to the template
+       
     }
 
     return render(request, 'main/dashboard.html', context)

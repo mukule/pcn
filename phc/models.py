@@ -2,6 +2,7 @@ from django.db import models
 
 class County(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    progress = models.FloatField(default=0.0, verbose_name="Progress (%)")
 
     def __str__(self):
         return self.name
@@ -9,7 +10,7 @@ class County(models.Model):
     def get_subcounties(self):
         # Access and return the related subcounties
         return self.subcounty_set.all()
-
+    
 class Partners(models.Model):
     name = models.CharField(max_length=100, unique=True)
 

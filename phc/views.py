@@ -109,6 +109,28 @@ def subcounty(request, subcounty_id):
     subcounty = get_object_or_404(Subcounty, pk=subcounty_id)
     return render(request, 'phc/subcounty.html', {'subcounty': subcounty})
 
+def update_county_progress(subcounty):
+    county = subcounty.county
+    
+    # Get all subcounties associated with this county
+    subcounties = county.subcounty_set.all()
+    
+    # Calculate the total progress for all subcounties
+    total_progress = sum(sub.progress for sub in subcounties)
+    
+    # Calculate the average progress for the county
+    if subcounties.exists():
+        average_progress = total_progress / subcounties.count()
+    else:
+        average_progress = 0.0
+    
+    # Round the average progress to the nearest whole number
+    rounded_average_progress = round(average_progress)
+    
+    # Update the progress field for the county
+    county.progress = rounded_average_progress
+    county.save()
+
 
 def indicator(request, subcounty_id, field_name):
     subcounty = get_object_or_404(Subcounty, pk=subcounty_id)
@@ -177,5 +199,7 @@ def indicator(request, subcounty_id, field_name):
     subcounty.progress = progress
     subcounty.save()
     
+    # Update the progress of the associated County
+    update_county_progress(subcounty)
+    
     return redirect('phc:subcounty', subcounty_id=subcounty.id)  # Redirect back to subcounty view
-
