@@ -1,15 +1,21 @@
 from django.db import models
 
+from django.db import models
+
 class County(models.Model):
     name = models.CharField(max_length=100, unique=True)
     progress = models.FloatField(default=0.0, verbose_name="Progress (%)")
 
+    # Fields to track subcounty counts by status
+    not_started = models.PositiveIntegerField(default=0)
+    in_progress = models.PositiveIntegerField(default=0)
+    fully_established = models.PositiveIntegerField(default=0)
+    partner_support = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.name
-    
-    def get_subcounties(self):
-        # Access and return the related subcounties
-        return self.subcounty_set.all()
+   
+
     
 class Partners(models.Model):
     name = models.CharField(max_length=100, unique=True)

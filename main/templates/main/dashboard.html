@@ -27,12 +27,12 @@
                                 </h2>
                             </div>
                             <div class="col-6 text-right">
-                                <span class="text-white-50">{{ stage1_percentage }} %</span>
+                                <span class="text-white-50">{{ pcns_with_percentage }} %</span>
                             </div>
                         </div>
     
                         <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                            <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage1_percentage }}%;"></div>
+                            <div class="progress-bar bg-light" role="progressbar" style="width: {{ pcns_with_percentage }}%;"></div>
                         </div>
                     </div>
                 </div>
@@ -50,12 +50,12 @@
                               </h2>
                           </div>
                           <div class="col-6 text-right">
-                              <span class="text-white-50">{{ stage4_percentage }} % </i></span>
+                              <span class="text-white-50">{{ pcns_with_partners_percentage }} % </i></span>
                           </div>
                       </div>
 
                       <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage4_percentage }}%;"></div>
+                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ pcns_with_partners_percentage }}%;"></div>
                       </div>
                   </div>
               </div>
@@ -74,12 +74,12 @@
                               </h2>
                           </div>
                           <div class="col-6 text-right">
-                              <span class="text-white-50">{{ stage2_percentage }} %</span>
+                              <span class="text-white-50">{{ fully_established_percentage }} %</span>
                           </div>
                       </div>
 
                       <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage2_percentage }}%;"></div>
+                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ fully_established_percentage }}%;"></div>
                       </div>
                   </div>
               </div>
@@ -97,12 +97,12 @@
                             </h2>
                         </div>
                         <div class="col-6 text-right">
-                            <span class="text-white-50">{{ stage1_percentage }} %</span>
+                            <span class="text-white-50">{{ in_progress_percentage }} %</span>
                         </div>
                     </div>
 
                     <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                        <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage1_percentage }}%;"></div>
+                        <div class="progress-bar bg-light" role="progressbar" style="width: {{ in_progress_percentage }}%;"></div>
                     </div>
                 </div>
             </div>
@@ -121,12 +121,12 @@
                           </h2>
                       </div>
                       <div class="col-6 text-right">
-                          <span class="text-white-50"> {{ stage0_percentage }} %</span>
+                          <span class="text-white-50"> {{ not_started_percentage }} %</span>
                       </div>
                   </div>
 
                   <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                      <div class="progress-bar bg-light" role="progressbar" style="width: {{ stage0_percentage }}%;"></div>
+                      <div class="progress-bar bg-light" role="progressbar" style="width: {{ not_started_percentage }}%;"></div>
                   </div>
               </div>
           </div>
@@ -135,16 +135,21 @@
       <div class="row">
         <div class="col-6">
             <div class="card">
+                <div class="card-header text-center">Implementing Partner Summery</div>
                 <div class="card-body">
-                    <canvas id="stageChart" width="400" height="300"></canvas>
+                    <canvas id="partnerSupportPieChart" width="400" height="400"></canvas>
+
                 </div>
             </div>
         </div>
         <div class="col-6">
             <div class="card">
-                <div class="card-body">
-                   <canvas id="stagePieChart" width="400" height="400"></canvas>
+                <div class="card-header text-center">
+                    Implementation Progress
                 </div>
+                    <div class="card-body">
+                        <canvas id="statusPieChart" width="400" height="400"></canvas>
+                    </div>
             </div>
         </div>
     </div>
@@ -153,20 +158,40 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">PCNs ACTION</h4>
-                    <p class="card-subtitle mb-4">
-                     The table Below summerizes the PDNs Progress in Kenya
-                    </p>
-
+                   <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="card-title">PCNs ACTION</h4>
+                        <p class="card-subtitle mb-4">
+                            The table below summarizes the PCNs Progress in Kenya per County
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <form id="filter-form" method="GET" action="{% url 'main:dashboard' %}" class="form-inline">
+                            <div class="form-group mb-2">
+                                <input type="text" id="county-search" name="county-search" class="form-control" placeholder="Search by County Name">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <select id="county-filter" name="county-filter" class="form-control">
+                                    <option value="">All Counties</option>
+                                    {% for county in counties %}
+                                    <option value="{{ county.id }}">{{ county.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                        </form>
+                    </div>
+                   </div>
+            
                     <table id="complex-header-datatable" class="table table-bordered dt-responsive nowrap">
                         <thead class="thead-light">
                             <tr>
                                 <th>ID</th>
                                 <th>County</th>
-                                <th>Stage 4</th>
-                                <th>Stage 3</th>
-                                <th>Stage 2</th>
-                                <th>Stage 1</th>
+                                <th>Partner Support</th>
+                                <th>In Progress</th>
+                                <th>Fully Established</th>
+                                <th>Not Started</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -174,33 +199,34 @@
                             <tr>
                                 <td>{{ county.id }}</td>
                                 <td>{{ county.name }}</td>
-                                <td>{{ county_stage_counts.county.name.4|default:0 }}</td>
-                                <td>{{ county_stage_counts.county.name.3|default:0 }}</td>
-                                <td>{{ county_stage_counts.county.name.2|default:0 }}</td>
-                                <td>{{ county_stage_counts.county.name.1|default:0 }}</td>
+                                <td>{{ county.partner_support }}</td>
+                                <td>{{ county.in_progress }}</td>
+                                <td>{{ county.fully_established }}</td>
+                                <td>{{ county.not_started }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    
+            
                     <div class="pagination pagination-lg">
                         <span class="step-links">
                             {% if page_counties.has_previous %}
-                                <a href="?page=1">&laquo; first</a>
-                                <a href="?page={{ page_counties.previous_page_number }}">previous</a>
+                            <a href="?page=1" class="btn btn-primary">&laquo; First</a>
+                            <a href="?page={{ page_counties.previous_page_number }}" class="btn btn-primary">Previous</a>
                             {% endif %}
-                    
+            
                             <span class="current-page">{{ page_counties.number }}</span>
-                    
+            
                             {% if page_counties.has_next %}
-                                <a href="?page={{ page_counties.next_page_number }}">next</a>
-                                <a href="?page={{ page_counties.paginator.num_pages }}">last &raquo;</a>
+                            <a href="?page={{ page_counties.next_page_number }}" class="btn btn-primary">Next</a>
+                            <a href="?page={{ page_counties.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
                             {% endif %}
                         </span>
                     </div>
-                    
+            
                 </div> <!-- end card body-->
             </div> <!-- end card -->
+            
         </div><!-- end col-->
        
     </div>

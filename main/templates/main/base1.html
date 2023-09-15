@@ -60,72 +60,140 @@
             });
         });
     </script>
-    
-
-    <!-- Add this to your HTML template -->
 
 <script>
-  
-  var stageNames = JSON.parse('{{ stage_names|safe }}');
-var stageCounts = JSON.parse('{{ stage_counts|safe }}');
+    // Data for the pie chart (Partner Support)
+    var partnerLabels = {{ partner_labels|safe }};
+    var partnerCounts = {{ partner_counts|safe }};
+    var partnerColors = ['#007BFF', '#FF5733']; // Blue for "With Partners," Red for "Without Partners"
 
-// Define an array of custom color codes for each stage
-var stageColors = [
-    '#FF5733',   // Stage 1 (Red)
-    '#007BFF',   // Stage 2 (Blue)
-    '#FFC107',   // Stage 3 (Yellow)
-    '#28A745'    // Stage 4 (Green)
-];
+    // Create the Chart.js pie chart for "Partner Support"
+    var ctxPartner = document.getElementById('partnerSupportPieChart').getContext('2d');
+    var partnerSupportPieChart = new Chart(ctxPartner, {
+        type: 'pie',
+        data: {
+            labels: partnerLabels,
+            datasets: [{
+                data: partnerCounts,
+                backgroundColor: partnerColors,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: true,
+                position: 'right',
+            },
+            title: {
+                display: true,
+                text: 'Subcounties with/without Partners',
+                position: 'bottom',
+                fontSize: 16,
+            }
+        }
+    });
+</script>
 
-// Create the Chart.js bar graph
-var ctx = document.getElementById('stageChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
+
+<script>
+  var ctx = document.getElementById('partnerSupportPieChart').getContext('2d');
+var partnerSupportPieChart = new Chart(ctx, {
+    type: 'pie',
     data: {
-        labels: stageNames,
+        labels: partnerLabels,
         datasets: [{
-            label: 'Number of PCNs',
-            data: stageCounts,
-            backgroundColor: stageColors,
-            borderColor: stageColors, // Use the same color for borders if needed
-            borderWidth: 1
+            data: partnerCounts,
+            backgroundColor: partnerColors,
         }]
     },
     options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: true,
+            position: 'right',
+        },
+        title: {
+            display: true,
+            text: 'Subcounties with/without Partners',
+            position: 'bottom',
+            fontSize: 16,
+        },
+        plugins: {
+            datalabels: {
+                formatter: (value, context) => {
+                    return value + '%'; // Format the label to include a percentage sign
+                },
+                color: '#fff', // Text color
+                anchor: 'end', // Position of the label relative to the data point (end for the end of the slice)
+                align: 'start', // Position of the label text relative to the anchor (start for the start of the label)
+            },
+        },
     }
 });
 
 </script>
 
-<!-- Add an HTML canvas element for the pie chart -->
+    
+
+    <!-- Add this to your HTML template -->
+    <script>
+        var partnerSupportLabels = JSON.parse('{{ partner_support_labels|safe }}');
+        var partnerSupportCounts = JSON.parse('{{ partner_support_counts|safe }}');
+    
+        // Define an array of custom color codes for each category
+        var partnerSupportColors = [
+            '#FF5733',   // Without Partner Support (Red)
+            '#007BFF',   // With Partner Support (Blue)
+        ];
+    
+        // Create the Chart.js bar graph
+        var ctx = document.getElementById('partnerSupportChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: partnerSupportLabels,
+                datasets: [{
+                    label: 'Number of Subcounties',
+                    data: partnerSupportCounts,
+                    backgroundColor: partnerSupportColors,
+                    borderColor: partnerSupportColors, // Use the same color for borders if needed
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 
 
 <script>
-    var stageNames = JSON.parse('{{ stage_names|safe }}');
-    var stageCounts = JSON.parse('{{ stage_counts|safe }}');
+    var statusLabels = JSON.parse('{{ status_labels|safe }}');
+    var statusCounts = JSON.parse('{{ status_counts|safe }}');
 
-    // Define an array of custom color codes for each stage
-    var stageColors = [
-        '#FF5733',   // Stage 1 (Red)
-        '#007BFF',   // Stage 2 (Blue)
-        '#FFC107',   // Stage 3 (Yellow)
-        '#28A745'    // Stage 4 (Green)
+    // Define an array of custom color codes for each status
+    var statusColors = [
+        '#FF5733',   // Not Started (Red)
+        '#FFC107' ,  // In Progress (Blue)
+        '#28A745',   // Fully Established (Green)
+        '#007BFF',     // Partner Support (Yellow)
     ];
 
     // Create the Chart.js pie chart
-    var ctx = document.getElementById('stagePieChart').getContext('2d');
+    var ctx = document.getElementById('statusPieChart').getContext('2d');
     var myPieChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: stageNames,
+            labels: statusLabels,
             datasets: [{
-                data: stageCounts,
-                backgroundColor: stageColors
+                data: statusCounts,
+                backgroundColor: statusColors
             }]
         },
         options: {
@@ -134,10 +202,51 @@ var myChart = new Chart(ctx, {
             legend: {
                 display: true,
                 position: 'right'
+            },
+            plugins: {
+                datalabels: {
+                    color: 'white', // Color of the figures
+                    font: {
+                        size: 12 // Font size of the figures
+                    },
+                    formatter: function(value, context) {
+                        return value; // Display the value (count) on each section
+                    }
+                }
+            },
+            title: {
+                display: true,
+                text: 'Subcounty Status',
+                position: 'bottom',
+                fontSize: 16
             }
         }
     });
 </script>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#county-search').on('input', function() {
+            // Get the search input value
+            var searchValue = $(this).val().toLowerCase();
+
+            // Filter the county list based on the search input
+            $('#county-list tr').each(function() {
+                var countyName = $(this).find('td:eq(1)').text().toLowerCase();
+                if (countyName.includes(searchValue)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+
 
 </body>
 </html>
