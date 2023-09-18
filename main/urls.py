@@ -10,7 +10,7 @@ urlpatterns = [
     path('county/<int:county_id>/', views.county_dashboard, name='county'),
     path('county/<int:county_id>/subcounty/<int:subcounty_id>/', views.county_dashboard, name='county_with_subcounties'),
     path("kenyan-map/", views.map, name="map"),
-    path('county/<int:county_id>/', views.county, name='county'),
+    path('map_details/<int:county_id>/', views.county, name='map_details'),
 
     
 ]

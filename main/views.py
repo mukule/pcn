@@ -302,14 +302,48 @@ def county_dashboard(request, county_id, subcounty_id=None):
 
     # Render the template and pass the relevant data to it
     return render(request, 'main/county_dashboard.html', context)
-
-
 def map(request):
     counties = County.objects.all()
 
     
+
+    # Retrieve the total number of subcounties
+    total_subcounties = Subcounty.objects.count()
+
+    # Retrieve the count of subcounties with status 0 (Not Started)
+    not_started_count = Subcounty.objects.filter(status=0).count()
+
+    # Retrieve the count of subcounties with status 1 (In Progress)
+    in_progress_count = Subcounty.objects.filter(status=1).count()
+
+    # Retrieve the count of subcounties with status 2 (Fully Established)
+    fully_established_count = Subcounty.objects.filter(status=2).count()
+
+    # Retrieve the count of subcounties with partners
+    subcounties_with_partners_count = Subcounty.objects.annotate(partner_count=Count('partners')).filter(partner_count__gt=0).count()
+
+    # Calculate the percentages
+    if total_subcounties > 0:
+        total_subcounties = float(total_subcounties)  # Convert to float for accurate percentage calculation
+        not_started_percentage = round((not_started_count / total_subcounties) * 100, 2)
+        in_progress_percentage = round((in_progress_count / total_subcounties) * 100, 2)
+        fully_established_percentage = round((fully_established_count / total_subcounties) * 100, 2)
+        subcounties_with_partners_percentage = round((subcounties_with_partners_count / total_subcounties) * 100, 2)
+        total_subcounties_with_percentage = 100.00
+    else:
+        not_started_percentage = 0.00
+        in_progress_percentage = 0.00
+        fully_established_percentage = 0.00
+        subcounties_with_partners_percentage = 0.00
+        total_subcounties_with_percentage = 0.00
+      
     context = {
-      'counties': counties
+        'counties': counties,
+        'pcns': total_subcounties,
+        'not_started_percentage':not_started_percentage,
+        'in_progress_percentage':in_progress_percentage,
+        'fully_established_percentage':fully_established_percentage,
+        'subcounties_with_partners_percentage':subcounties_with_partners_percentage
     }
     return render(request, 'main/map.html', context)
 
@@ -317,8 +351,22 @@ def county(request, county_id):
     county = get_object_or_404(County, id=county_id)
     counties = County.objects.all()
 
+    # Calculate the total number of subcounties for the specific county
+    total_subcounties = county.not_started + county.in_progress + county.fully_established + county.partner_support
+
+    # Calculate percentages
+    percentage_not_started = (county.not_started / total_subcounties) * 100 if total_subcounties > 0 else 0.0
+    percentage_in_progress = (county.in_progress / total_subcounties) * 100 if total_subcounties > 0 else 0.0
+    percentage_fully_established = (county.fully_established / total_subcounties) * 100 if total_subcounties > 0 else 0.0
+    percentage_partner_support = (county.partner_support / total_subcounties) * 100 if total_subcounties > 0 else 0.0
+
     context = {
         'county': county,
-        'counties':counties
+        'counties': counties,
+        'pcns': total_subcounties,
+        'percentage_not_started': percentage_not_started,
+        'percentage_in_progress': percentage_in_progress,
+        'percentage_fully_established': percentage_fully_established,
+        'percentage_partner_support': percentage_partner_support,
     }
-    return render(request, 'main/map.html', context)
+    return render(request, 'main/county_map.html', context)
