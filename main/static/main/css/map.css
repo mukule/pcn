@@ -1,0 +1,78 @@
+/* #kitui {
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+    {% for county in counties %}
+        {% if county.id == 1 %}
+            {% if county.status > 1 %}
+                fill: red;
+                
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+}
+#laikipia{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;;}
+#machakos{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;;}
+#makueni{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#mandera{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#marsabit{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#meru{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#migori{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#mombasa{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#transzoia{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#narok{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#nyamira{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#taitataveta{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#siaya{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#samburu{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#turkana{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#nandi{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#tharakanithi{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#uasingishu{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#vihiga{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#wajir{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#westpokot{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#nakuru{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kisumu{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kisii{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#baringo{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#bomet{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#bungoma{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#busia{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#elgeyomarkwet{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#embu{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#garissa{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#homabay{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#isiolo{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kajiado{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kakamega{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kericho{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kilifi{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#lamu{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#muranga{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kiambu{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kirinyaga{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#nyeri{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#nairobi{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#nyandarua{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#tanariver{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+#kwale{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+
+
+
+
+
+
+
+.st1{fill:none;stroke:#232323;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:10;}
+.st2{fill-rule:evenodd;clip-rule:evenodd;}
+.st3{fill:none;stroke:#000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:10;}
+.st4{fill-rule:evenodd;clip-rule:evenodd;fill:#00FF01;}
+.st5{fill-rule:evenodd;clip-rule:evenodd;fill:#008001;}
+.st6{fill-rule:evenodd;clip-rule:evenodd;fill:#01FFFC;}
+.st7{fill-rule:evenodd;clip-rule:evenodd;fill:#0E8DFF;}
+.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#FF0007;}
+.st9{fill-rule:evenodd;clip-rule:evenodd;fill:#0006CA;}
+.st10{fill:none;stroke:#000000;stroke-miterlimit:10;}
+.st11{font-family:Liberation Sans,Arial,Sans-serif;}
+.st12{font-size:16px;}
+.st13{fill:#000;} */

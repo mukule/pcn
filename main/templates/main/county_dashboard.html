@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
-                    <h3 class="mb-0 font-size-18">Dashboard</h3>
+                    <h3 class="mb-0 font-size-18">Dashboard >> {{ county.name }}</h3>
                 </div>
             </div>
         </div> 
@@ -162,52 +162,35 @@
                     <div class="col-md-6">
                         <h4 class="card-title">PCNs ACTION</h4>
                         <p class="card-subtitle mb-4">
-                            The table below summarizes the PCNs Progress in Kenya per County
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <form id="filter-form" method="GET" action="{% url 'main:dashboard' %}" class="form-inline">
-                            <div class="form-group mb-2">
-                                <input type="text" id="county-search" name="county-search" class="form-control" placeholder="Search by County Name">
-                            </div>
-                            <div class="form-group mx-sm-3 mb-2">
-                                <select id="county-filter" name="county-filter" class="form-control">
-                                    <option value="">All Counties</option>
-                                    {% for county in counties %}
-                                    <option value="{{ county.id }}">{{ county.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary mb-2">Filter</button>
-                        </form>
+                            The table below summarizes the PCNs Progress in {{ county.name }}
                     </div>
                    </div>
             
-                    <table id="complex-header-datatable" class="table table-bordered dt-responsive nowrap">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>County</th>
-                                <th>Partner Support</th>
-                                <th>In Progress</th>
-                                <th>Fully Established</th>
-                                <th>Not Started</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for county in page_counties %}
-                            <tr>
-                                <td>{{ county.id }}</td>
-                                <td>{{ county.name }}</td>
-                                <td>{{ county.partner_support }}</td>
-                                <td>{{ county.in_progress }}</td>
-                                <td>{{ county.fully_established }}</td>
-                                <td>{{ county.not_started }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-            
+                   <table id="complex-header-datatable" class="table table-bordered dt-responsive nowrap">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>SubCounty</th>
+                            <th>Partner Support</th>
+                            <th>In Progress</th>
+                            <th>Fully Established</th>
+                            <th>Not Started</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for county in subcounties %}
+                        <tr>
+                            <td>{{ county.id }}</td>
+                            <td>{{ county.name }}</td>
+                            <td>{% if county.partners.all %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if county.status == 1 %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if county.status == 2 %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if county.status == 0 %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
                     <div class="pagination pagination-sm">
                         <span class="step-links">
                             {% if page_counties.has_previous %}
@@ -228,10 +211,113 @@
             </div> <!-- end card -->
             
         </div><!-- end col-->
-      
        
     </div>
     <!-- end row-->
+<div class="row text-center">
+    <div class="col-12" style="position: relative;">
+        <!-- Include the SVG image here -->
+      <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="100%" height="751.181px" viewBox="0 0 637.795 751.181" style="enable-background:new 0 0 637.795 751.181;"
+	 xml:space="preserve" style="position: relative; z-index:  !important;">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFF00;}
+	.st1{fill:none;stroke:#232323;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:10;}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;}
+	.st3{fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:10;}
+	.st4{fill-rule:evenodd;clip-rule:evenodd;fill:#00FF01;}
+	.st5{fill-rule:evenodd;clip-rule:evenodd;fill:#008001;}
+	.st6{fill-rule:evenodd;clip-rule:evenodd;fill:#01FFFC;}
+	.st7{fill-rule:evenodd;clip-rule:evenodd;fill:#0E8DFF;}
+	.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#FF0007;}
+	.st9{fill-rule:evenodd;clip-rule:evenodd;fill:#0006CA;}
+	.st10{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st11{font-family:Liberation Sans,Arial,Sans-serif;}
+	.st12{font-size:16px;}
+	.st13{fill:#FFFFFF;}
+</style>
+{% include '../main/includes/svg.html' %}
+<line class="st10" x1="39.538" y1="372.599" x2="108.475" y2="394.736"/>
+<line class="st10" x1="124.575" y1="447.821" x2="124.086" y2="543.149"/>
+<g>
+	<text transform="matrix(1 0 0 1 469.1134 700.7568)" class="st11 st12">1</text>
+	<text transform="matrix(1 0 0 1 423.1506 703.0642)" class="st13 st11 st12">2</text>
+	<g>
+		<text transform="matrix(1 0 0 1 454.1837 629.0112)" class="st13 st11 st12">3</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 445.8867 518.2112)" class="st13 st11 st12">4</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 520.2717 555.5805)" class="st13 st11 st12">5</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 364.6157 651.1793)" class="st13 st11 st12">6</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 507.9962 451.0379)" class="st13 st11 st12">7</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 485.4338 282.1752)" class="st13 st11 st12">8</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 530.8868 157.2112)" class="st13 st11 st12">9</text>
+	</g>
+	<text transform="matrix(1 0 0 1 305.6593 201.2439)" class="st11 st12">10</text>
+	<text transform="matrix(1 0 0 1 373.088 333.2112)" class="st11 st12">11</text>
+	<text transform="matrix(1 0 0 1 312.0099 393.2557)" class="st11 st12">12</text>
+	<text transform="matrix(1 0 0 1 318.4512 425.4655)" class="st11 st12">13</text>
+	<text transform="matrix(1 0 0 1 309.0687 449.7104)" class="st11 st12">14</text>
+	<text transform="matrix(1 0 0 1 357.3622 505.1087)" class="st11 st12">15</text>
+	<text transform="matrix(1 0 0 1 290.7863 496.8452)" class="st11 st12">16</text>
+	<text transform="matrix(1 0 0 1 301.2556 538.7183)" class="st11 st12">17</text>
+	<g>
+		<text transform="matrix(1 0 0 1 218.7785 418.7354)" class="st13 st11 st12">18</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 255.3835 436.6545)" class="st13 st11 st12">19</text>
+	</g>
+	<text transform="matrix(1 0 0 1 284.1967 443.2377)" class="st13 st11 st12">20</text>
+	<text transform="matrix(1 0 0 1 261.3537 459.9366)" class="st13 st11 st12">21</text>
+	<g>
+		<text transform="matrix(1 0 0 1 242.9735 476.7939)" class="st13 st11 st12">22</text>
+	</g>
+	<text transform="matrix(1 0 0 1 146.5381 171.8235)" class="st11 st12">23</text>
+	<text transform="matrix(1 0 0 1 137.1018 294.0004)" class="st11 st12">24</text>
+	<text transform="matrix(1 0 0 1 263.1288 308.5862)" class="st11 st12">25</text>
+	<text transform="matrix(1 0 0 1 127.3112 391.8035)" class="st11 st12">26</text>
+	<text transform="matrix(1 0 0 1 141.2192 365.0641)" class="st11 st12">27</text>
+	<text transform="matrix(1 0 0 1 154.1805 331.4948)" class="st11 st12">28</text>
+	<text transform="matrix(1 0 0 1 113.2168 330.9579)" class="st11 st12">29</text>
+	<text transform="matrix(1 0 0 1 187.4792 354.6536)" class="st11 st12">30</text>
+	<text transform="matrix(1 0 0 1 244.047 383.6891)" class="st11 st12">31</text>
+	<text transform="matrix(1 0 0 1 186.94 427.4522)" class="st11 st12">32</text>
+	<text transform="matrix(1 0 0 1 153.6933 496.0169)" class="st11 st12">33</text>
+	<text transform="matrix(1 0 0 1 238.084 543.7791)" class="st11 st12">34</text>
+	<text transform="matrix(1 0 0 1 136.8974 427.5959)" class="st11 st12">35</text>
+	<text transform="matrix(1 0 0 1 138.382 462.1583)" class="st11 st12">36</text>
+	<text transform="matrix(1 0 0 1 99.7471 382.9251)" class="st11 st12">37</text>
+	<text transform="matrix(1 0 0 1 14.1761 376.0543)" class="st11 st12">38</text>
+	<text transform="matrix(1 0 0 1 93.0061 355.0275)" class="st11 st12">39</text>
+	<text transform="matrix(1 0 0 1 64.1471 370.2797)" class="st11 st12">40</text>
+	<text transform="matrix(1 0 0 1 62.7069 413.2362)" class="st11 st12">41</text>
+	<text transform="matrix(1 0 0 1 108.1488 418.274)" class="st11 st12">42</text>
+	<text transform="matrix(1 0 0 1 65.9433 446.2885)" class="st11 st12">43</text>
+	<text transform="matrix(1 0 0 1 70.0738 474.3412)" class="st11 st12">44</text>
+	<text transform="matrix(1 0 0 1 101.834 463.7672)" class="st11 st12">45</text>
+	<text transform="matrix(1 0 0 1 115.4146 563.5129)" class="st11 st12">46</text>
+	<text transform="matrix(1 0 0 1 251.8302 496.7562)" class="st13 st11 st12">47</text>
+    
+</g>
+</svg>
+
+
+        <!-- Embed the map inside an iframe and position it behind the SVG using absolute positioning -->
+        <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8171114.066776021!2d32.606563725676295!3d0.16492886256538883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182780d08350900f%3A0x403b0eb0a1976dd9!2sKenya!5e0!3m2!1sen!2ske!4v1694692733303!5m2!1sen!2ske" 
+            style="border: 0; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 0;"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+    </div>
+</div>
 
     
 

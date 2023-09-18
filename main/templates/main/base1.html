@@ -16,11 +16,18 @@
     <script src="{% static 'invoice/js/jquery.min.js' %}"></script>
     <!-- App css -->
     <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}" type="text/css">
+    <!-- <link rel="stylesheet" href="{% static 'main/css/map.css' %}" type="text/css"> -->
     <link rel="stylesheet" href="{% static 'main/css/icons.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'main/css/theme.min.css' %}" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+    <!-- Include Leaflet CSS and JavaScript -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Include Folium CSS and JavaScript -->
+    <link rel="stylesheet" href="https://unpkg.com/folium@0.12.1/folium.css" />
+    <script src="https://unpkg.com/folium@0.12.1/folium.js"></script>
 
 
 </head>
@@ -43,6 +50,7 @@
     <script src="{% static 'main/js/theme.css' %}"></script>
     <script src="{% static 'main/js/car_form.js' %}"></script>
     <script src="{% static 'main/js/pages/chartjs-demo.js' %}"></script>
+    <script src="{% static 'main/js/map.js' %}"></script>
 
     <script src="{% static 'main/js/jspdf.debug.js' %}"></script>
     <script src="{% static 'main/js/html2canvas.min.js' %}"></script>
@@ -244,6 +252,90 @@ var partnerSupportPieChart = new Chart(ctx, {
                 }
             });
         });
+    });
+</script>
+
+
+<script>
+    var ctx = document.getElementById('statusPieChart').getContext('2d');
+    var subcountyStatusPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: JSON.parse('{{ status_labels|escapejs }}'), // Parse the JSON data from Django template
+            datasets: [{
+                data: JSON.parse('{{ status_percentages|escapejs }}'), // Parse the JSON data from Django template
+                backgroundColor: [
+                    '#FF5733',   // Not Started (Red)
+                    '#FFC107' ,  // In Progress (Blue)
+                    '#28A745',   // Fully Established (Green)
+                    '#007BFF',   // Partner Support (Yellow)
+                ],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: true,
+                position: 'right',
+            },
+            title: {
+                display: true,
+                text: 'Subcounty Status',
+                position: 'bottom',
+                fontSize: 16,
+            },
+            plugins: {
+                datalabels: {
+                    formatter: (value, context) => {
+                        return value + '%'; // Format the label to include a percentage sign
+                    },
+                    color: '#fff', // Text color
+                    anchor: 'end', // Position of the label relative to the data point (end for the end of the slice)
+                    align: 'start', // Position of the label text relative to the anchor (start for the start of the label)
+                },
+            },
+        }
+    });
+</script>
+
+
+
+<script>
+    var ctx = document.getElementById('partnerSupportPieChart').getContext('2d');
+    var partnerSupportPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: JSON.parse('{{ partner_labels|escapejs }}'), // Parse the JSON data from Django template
+            datasets: [{
+                data: JSON.parse('{{ partner_percentages|escapejs }}'), // Parse the JSON data from Django template
+                backgroundColor: ['#33FF45', '#FF5733'], // Define custom colors for "With Partners" and "Without Partners"
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: true,
+                position: 'right',
+            },
+            title: {
+                display: true,
+                text: 'Subcounties with/without Partners',
+                position: 'bottom',
+                fontSize: 16,
+            },
+            plugins: {
+                datalabels: {
+                    formatter: (value, context) => {
+                        return value + '%'; // Format the label to include a percentage sign
+                    },
+                    color: '#fff', // Text color
+                    anchor: 'end', // Position of the label relative to the data point (end for the end of the slice)
+                    align: 'start', // Position of the label text relative to the anchor (start for the start of the label)
+                },
+            },
+        }
     });
 </script>
 

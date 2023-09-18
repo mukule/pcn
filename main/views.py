@@ -4,6 +4,7 @@ from django.db.models import Count, Q, F
 from django.core.paginator import Paginator
 import json 
 from django.db.models import Count, Case, When, IntegerField
+import folium
 
 def index(request):
     return render(request, 'main/index.html')
@@ -53,6 +54,30 @@ def Update_status(request):
         return HttpResponse(status=200)  # Return a 200 status upon successful update
     except Exception as e:
         return HttpResponse(status=500)  # Return a 500 status code if an error occurs
+    
+
+
+def status(request):
+    try:
+        counties = County.objects.all()
+
+        for county in counties:
+            subcounties = county.subcounty_set.all()
+            total_subcounties = subcounties.count()
+
+            if total_subcounties > 0:
+                fully_established_count = county.fully_established
+                percentage = (fully_established_count / total_subcounties) * 100
+            else:
+                percentage = 0
+
+            # Update the 'status' field with the calculated percentage
+            county.status = percentage
+            county.save()
+
+        return HttpResponse("County percentages updated successfully.", status=200)
+    except Exception as e:
+        return HttpResponse("An error occurred while updating county percentages.", status=500)
 
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -62,6 +87,9 @@ import json  # Add this import at the beginning of your views.py
 def dashboard(request):
     # Execute the update_county_fields function to update the fields
     Update_status(request)
+    status(request)
+  
+
 
     # Retrieve the total number of subcounties
     total_subcounties = Subcounty.objects.count()
@@ -95,6 +123,7 @@ def dashboard(request):
 
     # Retrieve all counties
     counties = County.objects.all()
+    
 
     # Handle search and filter
     county_search = request.GET.get('county-search')
@@ -134,6 +163,27 @@ def dashboard(request):
     partner_labels_json = json.dumps(partner_labels)
     partner_counts_json = json.dumps(partner_counts)
 
+    # Retrieve all pcns per county
+    pcns_per_county = County.objects.all()
+    
+    # Create a Paginator object for pcns per county with 5 items per page
+    pcns_per_county_per_page = 5  # Number of pcns per county to display per page
+    pcns_per_county_paginator = Paginator(pcns_per_county, pcns_per_county_per_page)
+
+    # Get the current page number from the request's GET parameters for pcns per county
+    pcns_per_county_page_number = request.GET.get('pcns_per_county_page')
+
+    try:
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        pcns_per_county_page = pcns_per_county_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
+
+    # county_statuses_json = json.dumps(county_statuses)
+
     context = {
         'pcns': total_subcounties,
         'pcn_not_started': not_started_count,
@@ -149,36 +199,126 @@ def dashboard(request):
         'county_search': county_search,
         'county_filter': int(county_filter) if county_filter else None,
         'counties': counties,
+        'county_pcns': pcns_per_county_page,
         'status_labels': status_labels_json,
         'status_counts': status_counts_json,
         'partner_labels': partner_labels_json,
         'partner_counts': partner_counts_json,
+        
     }
 
     return render(request, 'main/dashboard.html', context)
 
 
+def county_dashboard(request, county_id, subcounty_id=None):
+    # Retrieve the specific county using its ID or any other unique identifier
+    county = get_object_or_404(County, id=county_id)
+
+    # Retrieve related data like subcounties or partner organizations if needed
+    subcounties = county.subcounty_set.all()
+    
+    # Filter subcounties by subcounty_id if provided
+    if subcounty_id is not None:
+        subcounty = get_object_or_404(Subcounty, id=subcounty_id)
+        subcounties = subcounties.filter(id=subcounty_id)
+    
+    # Count the total number of subcounties in this county
+    subcounties_count = subcounties.count()
+    
+    # Count the subcounties with status 0 (Not Started)
+    not_started_count = subcounties.filter(status=0).count()
+
+    # Count the subcounties with status 1 (In Progress)
+    in_progress_count = subcounties.filter(status=1).count()
+
+    # Count the subcounties with status 2 (Fully Established)
+    fully_established_count = subcounties.filter(status=2).count()
+
+    # Count the subcounties with partner support
+    partner_support_count = subcounties.filter(Q(partners__isnull=False) | Q(partners__gt=0)).count()
+
+    # Calculate the percentages
+    if subcounties_count > 0:
+        subcounties_count = float(subcounties_count)  # Convert to float for accurate percentage calculation
+        not_started_percentage = round((not_started_count / subcounties_count) * 100, 2)
+        in_progress_percentage = round((in_progress_count / subcounties_count) * 100, 2)
+        fully_established_percentage = round((fully_established_count / subcounties_count) * 100, 2)
+        partner_support_percentage = round((partner_support_count / subcounties_count) * 100, 2)
+        subcounties_count = float(subcounties_count)
+        pcns_percentage = round((subcounties_count / subcounties_count) * 100, 2)
+    else:
+        pcns_percentage = 0.00
+        not_started_percentage = 0.00
+        in_progress_percentage = 0.00
+        fully_established_percentage = 0.00
+        partner_support_percentage = 0.00
+
+    # Retrieve all pcns per county
+    pcns_per_county = County.objects.all()
+    
+    # Create a Paginator object for pcns per county with 5 items per page
+    pcns_per_county_per_page = 5  # Number of pcns per county to display per page
+    pcns_per_county_paginator = Paginator(pcns_per_county, pcns_per_county_per_page)
+
+    # Get the current page number from the request's GET parameters for pcns per county
+    pcns_per_county_page_number = request.GET.get('pcns_per_county_page')
+
+    try:
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        pcns_per_county_page = pcns_per_county_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
+
+    # Prepare data for the Subcounty Status Pie Chart
+    status_labels = ['Not Started', 'In Progress', 'Fully Established']
+    status_percentages = [not_started_percentage, in_progress_percentage, fully_established_percentage]
+
+    # Prepare data for the Partner Support Pie Chart
+    partner_labels = ['With Partners', 'Without Partners']
+    partner_percentages = [partner_support_percentage, 100 - partner_support_percentage]
+
+    context = {
+        'county': county,
+        'subcounties': subcounties,
+        'pcns': subcounties_count,
+        'pcn_not_started': not_started_count,
+        'pcn_in_progress': in_progress_count,
+        'pcn_fully_established': fully_established_count,
+        'county_pcns': pcns_per_county_page,
+        'pcn_with_partners': partner_support_count,
+        'not_started_percentage': not_started_percentage,
+        'in_progress_percentage': in_progress_percentage,
+        'fully_established_percentage': fully_established_percentage,
+        'pcns_with_partners_percentage': partner_support_percentage,
+        'pcns_with_percentage': pcns_percentage,
+        'status_labels': json.dumps(status_labels),  # Convert to JSON
+        'status_percentages': json.dumps(status_percentages),  # Convert to JSON
+        'partner_labels': json.dumps(partner_labels),  # Convert to JSON
+        'partner_percentages': json.dumps(partner_percentages),  # Convert to JSON
+    }
+
+    # Render the template and pass the relevant data to it
+    return render(request, 'main/county_dashboard.html', context)
 
 
-def toggle_subcounty_stages(request):
-    if request.method == 'POST':
-        new_stage_value = request.POST.get('new_stage_value')
+def map(request):
+    counties = County.objects.all()
 
-        try:
-            # Convert the new stage value to a boolean
-            new_stage_value = bool(int(new_stage_value))
+    
+    context = {
+      'counties': counties
+    }
+    return render(request, 'main/map.html', context)
 
-            # Update all Subcounties with the new stage value
-            Subcounty.objects.update(
-                stage1=new_stage_value,
-                stage2=new_stage_value,
-                stage3=new_stage_value,
-                stage4=new_stage_value
-            )
+def county(request, county_id):
+    county = get_object_or_404(County, id=county_id)
+    counties = County.objects.all()
 
-            return redirect('main:magic')  # Redirect to the Subcounty list view
-        except ValueError:
-            pass
-
-    return render(request, 'main/toggle_stages.html')
-
+    context = {
+        'county': county,
+        'counties':counties
+    }
+    return render(request, 'main/map.html', context)
