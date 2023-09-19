@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_bootstrap4',
     'users',
     'main',
     'phc',
@@ -137,6 +139,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.CustomUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGIN_URL = 'login'
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'phc:index'
 AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880

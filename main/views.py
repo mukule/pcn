@@ -302,10 +302,10 @@ def county_dashboard(request, county_id, subcounty_id=None):
 
     # Render the template and pass the relevant data to it
     return render(request, 'main/county_dashboard.html', context)
+
+
 def map(request):
     counties = County.objects.all()
-
-    
 
     # Retrieve the total number of subcounties
     total_subcounties = Subcounty.objects.count()
@@ -370,3 +370,112 @@ def county(request, county_id):
         'percentage_partner_support': percentage_partner_support,
     }
     return render(request, 'main/county_map.html', context)
+
+def graphs(request):
+    # Retrieve the total number of subcounties
+    total_subcounties = Subcounty.objects.count()
+
+    # Retrieve the count of subcounties with status 0 (Not Started)
+    not_started_count = Subcounty.objects.filter(status=0).count()
+
+    # Retrieve the count of subcounties with status 1 (In Progress)
+    in_progress_count = Subcounty.objects.filter(status=1).count()
+
+    # Retrieve the count of subcounties with status 2 (Fully Established)
+    fully_established_count = Subcounty.objects.filter(status=2).count()
+
+    # Retrieve the count of subcounties with partners
+    subcounties_with_partners_count = Subcounty.objects.annotate(partner_count=Count('partners')).filter(partner_count__gt=0).count()
+
+   # Calculate the percentages for Not Started, In Progress, and Fully Established
+    if total_subcounties > 0:
+        total_subcounties = float(total_subcounties)  # Convert to float for accurate percentage calculation
+        not_started_percentage = round((not_started_count / total_subcounties) * 100, 2)
+        in_progress_percentage = round((in_progress_count / total_subcounties) * 100, 2)
+        fully_established_percentage = round((fully_established_count / total_subcounties) * 100, 2)
+    else:
+        not_started_percentage = 0.00
+        in_progress_percentage = 0.00
+        fully_established_percentage = 0.00
+
+    # Calculate the percentage for Subcounties with Partners
+    if total_subcounties > 0:
+        subcounties_with_partners_percentage = round((subcounties_with_partners_count / total_subcounties) * 100, 2)
+    else:
+        subcounties_with_partners_percentage = 0.00
+
+    # Calculate the percentage for Total Subcounties
+    total_subcounties_with_percentage = 100.00
+
+    # Prepare data for the Subcounty Status Pie Chart
+    status_labels = ['Not Started', 'In Progress', 'Fully Established']
+    status_percentages = [not_started_percentage, in_progress_percentage, fully_established_percentage]
+
+    # Prepare data for the Partner Support Pie Chart
+    partner_labels = ['With Partners', 'Without Partners']
+    partner_percentages = [subcounties_with_partners_percentage, 100 - subcounties_with_partners_percentage]
+
+    context = {
+        'total_subcounties': total_subcounties,
+        'not_started_count': not_started_count,
+        'in_progress_count': in_progress_count,
+        'fully_established_count': fully_established_count,
+        'subcounties_with_partners_count': subcounties_with_partners_count,
+        'not_started_percentage': not_started_percentage,
+        'in_progress_percentage': in_progress_percentage,
+        'fully_established_percentage': fully_established_percentage,
+        'subcounties_with_partners_percentage': subcounties_with_partners_percentage,
+        'total_subcounties_with_percentage': total_subcounties_with_percentage,
+        'status_labels': json.dumps(status_labels),  # Convert to JSON
+        'status_percentages': json.dumps(status_percentages),  # Convert to JSON
+        'partner_labels': json.dumps(partner_labels),  # Convert to JSON
+        'partner_percentages': json.dumps(partner_percentages),  # Convert to JSON
+    }
+
+    # Render the template and pass the relevant data to it
+    return render(request, 'main/graphs.html', context)
+
+
+def partners(request):
+    # Query all Partners and annotate them with the count of related Subcounties
+    partners_with_subcounty_count = Partners.objects.annotate(subcounty_count=Count('subcounty'))
+
+    # Create a list of dictionaries containing Partner names and Subcounty counts
+    data = [
+        {'name': partner.name, 'subcounty_count': partner.subcounty_count}
+        for partner in partners_with_subcounty_count
+    ]
+
+    # Convert the data to JSON format
+    data_json = json.dumps(data)
+
+    subcounties_with_partners_count = Subcounty.objects.annotate(partner_count=Count('partners')).filter(partner_count__gt=0).count()
+
+    total_subcounties = Subcounty.objects.count()
+
+    if total_subcounties > 0:
+        total_subcounties = float(total_subcounties)  # Convert to float for accurate percentage calculation
+        subcounties_with_partners_percentage = round((subcounties_with_partners_count / total_subcounties) * 100, 2)
+        total_subcounties_with_percentage = 100.00
+    else:
+        not_started_percentage = 0.00
+        in_progress_percentage = 0.00
+        fully_established_percentage = 0.00
+        subcounties_with_partners_percentage = 0.00
+        total_subcounties_with_percentage = 0.00
+
+    # Prepare data for the second pie chart (Subcounties with/without Partners)
+    subcounties_without_partners_percentage = 100.00 - subcounties_with_partners_percentage
+    partner_labels = ['With Partners', 'Without Partners']
+    partner_counts = [subcounties_with_partners_percentage, subcounties_without_partners_percentage]
+
+    partner_labels_json = json.dumps(partner_labels)
+    partner_counts_json = json.dumps(partner_counts)
+
+    context = {
+        'partners_with_subcounty_count_json': data_json,
+        'partner_labels': partner_labels_json,
+        'partner_counts': partner_counts_json,
+    }
+
+    return render(request, 'main/partners.html', context)

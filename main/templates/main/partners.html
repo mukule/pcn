@@ -1,0 +1,44 @@
+{% extends 'main/base1.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h3 class="mb-0 font-size-18">Dashboard</h3>
+                </div>
+            </div>
+        </div> 
+        
+      <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    Implementation Progress
+                </div>
+                    <div class="card-body">
+                        <canvas id="partnerSupportPieChart" width="400" height="400"></canvas>
+                    </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header text-center">Partner Support</div>
+                <div class="card-body">
+                    <canvas id="partnerDonutChart" width="400" height="400"></canvas>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row-->
+
+
+    
+
+    </div>
+</div>
+{% endblock content %}

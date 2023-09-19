@@ -3,13 +3,14 @@ from .models import County, Subcounty
 from .forms import *
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-
-# Create your views here.
+@login_required
 def index(request):
     return render(request, 'phc/index.html')
 
 
+@login_required
 def create_county(request):
     if request.method == 'POST':
         form = CountyForm(request.POST)
@@ -23,6 +24,7 @@ def create_county(request):
         form = CountyForm()
     return render(request, 'phc/create_county.html', {'form': form})
 
+@login_required
 def create_subcounty(request, county_id):
     county = get_object_or_404(County, pk=county_id)
 
@@ -43,7 +45,7 @@ def create_subcounty(request, county_id):
     return render(request, 'phc/create_subcounty.html', {'form': form, 'county': county})
 
 
-
+@login_required
 def edit_subcounty(request, county_id, subcounty_id):
     county = get_object_or_404(County, pk=county_id)
     subcounty = get_object_or_404(Subcounty, pk=subcounty_id)
@@ -62,7 +64,7 @@ def edit_subcounty(request, county_id, subcounty_id):
     
     return render(request, 'phc/edit_subcounty.html', {'form': form, 'county': county, 'subcounty': subcounty})
 
-
+@login_required
 def counties(request):
     counties_list = County.objects.all()
     paginator = Paginator(counties_list, 10)  # Paginate by 10 counties per page
@@ -70,11 +72,13 @@ def counties(request):
     counties = paginator.get_page(page)
     return render(request, 'phc/counties.html', {'counties': counties})
 
+@login_required
 def county(request, county_id):
     county = get_object_or_404(County, pk=county_id)
     subcounties = county.subcounty_set.all()
     return render(request, 'phc/county.html', {'county': county, 'subcounties': subcounties})
 
+@login_required
 def subcounties(request):
     subcounty_name = request.GET.get('subcounty_name')
     county_name = request.GET.get('county_name')
@@ -100,7 +104,7 @@ def subcounties(request):
 
 
 
-
+@login_required
 def create_partner(request):
     if request.method == 'POST':
         form = PartnersForm(request.POST)
@@ -115,6 +119,7 @@ def create_partner(request):
     
     return render(request, 'phc/create_partners.html', {'form': form})
 
+@login_required
 def partners(request):
     partners_list = Partners.objects.all()
     paginator = Paginator(partners_list, 10)  # Paginate by 10 partners per page
@@ -123,11 +128,11 @@ def partners(request):
     return render(request, 'phc/partners.html', {'partners': partners})
 
 
-
+@login_required
 def subcounty(request, subcounty_id):
     subcounty = get_object_or_404(Subcounty, pk=subcounty_id)
     return render(request, 'phc/subcounty.html', {'subcounty': subcounty})
-
+@login_required
 def update_county_progress(subcounty):
     county = subcounty.county
     

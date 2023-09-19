@@ -339,6 +339,182 @@ var partnerSupportPieChart = new Chart(ctx, {
     });
 </script>
 
+<script>
+    var ctx = document.getElementById('statusBarChart').getContext('2d');
+    var subcountyStatusBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ status_labels|safe }}, // Use the labels directly from Django template
+            datasets: [{
+                label: 'Status Percentages',
+                data: {{ status_percentages|safe }}, // Use the percentages directly from Django template
+                backgroundColor: [
+                    '#FF5733',   // Not Started (Red)
+                    '#FFC107',   // In Progress (Blue)
+                    '#28A745',   // Fully Established (Green)
+                ],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: false,
+            },
+            title: {
+                display: true,
+                text: 'Subcounty Status',
+                position: 'top', // Position the title at the top of the chart
+                fontSize: 16,
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false,
+                    },
+                }],
+                yAxes: [{
+                    gridLines: {
+                        display: false,
+                    },
+                    ticks: {
+                        beginAtZero: true, // Start the y-axis at 0
+                        callback: function(value) {
+                            return value + '%'; // Add a percentage sign to the y-axis labels
+                        },
+                    },
+                }],
+            },
+            plugins: {
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#000', // Text color
+                    formatter: function(value, context) {
+                        return value + '%'; // Display the value (percentage) on each bar
+                    },
+                },
+            },
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById('statusLineChart').getContext('2d');
+    var subcountyStatusBarChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ status_labels|safe }}, // Use the labels directly from Django template
+            datasets: [{
+                label: 'Status Percentages',
+                data: {{ status_percentages|safe }}, // Use the percentages directly from Django template
+                backgroundColor: [
+                    '#FF5733',   // Not Started (Red)
+                    '#FFC107',   // In Progress (Blue)
+                    '#28A745',   // Fully Established (Green)
+                ],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: false,
+            },
+            title: {
+                display: true,
+                text: 'Subcounty Status',
+                position: 'top', // Position the title at the top of the chart
+                fontSize: 16,
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false,
+                    },
+                }],
+                yAxes: [{
+                    gridLines: {
+                        display: false,
+                    },
+                    ticks: {
+                        beginAtZero: true, // Start the y-axis at 0
+                        callback: function(value) {
+                            return value + '%'; // Add a percentage sign to the y-axis labels
+                        },
+                    },
+                }],
+            },
+            plugins: {
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#000', // Text color
+                    formatter: function(value, context) {
+                        return value + '%'; // Display the value (percentage) on each bar
+                    },
+                },
+            },
+        }
+    });
+</script>
+
+
+<script>
+    var ctx = document.getElementById('partnerDonutChart').getContext('2d');
+    
+    // Parse the JSON data from Django template
+    var partnersData = JSON.parse('{{ partners_with_subcounty_count_json|safe }}');
+
+    // Extract Partner names and Subcounty counts
+    var partnerNames = partnersData.map(function(partner) {
+        return partner.name;
+    });
+
+    var subcountyCounts = partnersData.map(function(partner) {
+        return partner.subcounty_count;
+    });
+
+    var donutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: partnerNames,
+            datasets: [{
+                data: subcountyCounts,
+                backgroundColor: [
+                    '#FF5733',   // Not Started (Red)
+                    '#FFC107',   // In Progress (Blue)
+                    '#28A745',   // Fully Established (Green)
+                ],
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+                display: true,
+                text: 'Partner Subcounty Counts',
+                position: 'top', // Position the title at the top of the chart
+                fontSize: 16,
+            },
+            legend: {
+                display: true,
+                position: 'right', // Position the legend on the right side
+            },
+            plugins: {
+                datalabels: {
+                    formatter: function(value, context) {
+                        return value + '%'; // Display the value (percentage) on each slice
+                    },
+                    color: '#fff', // Text color
+                    anchor: 'end', // Position of the label relative to the data point (end for the end of the slice)
+                    align: 'start', // Position of the label text relative to the anchor (start for the start of the label)
+                },
+            },
+        },
+    });
+</script>
+
 
 </body>
 </html>

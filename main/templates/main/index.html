@@ -11,8 +11,53 @@
             <h2 class="font-weight-bold mt-4 text-white">Primary Care Networks (PCNs)</h2>
             
             <a href="{% url 'main:dashboard' %}" class="btn btn-lg btn-primary mt-4">Customized Reports</a>
-            <a href="" class="btn btn-lg btn-primary mt-4">Data Managers Account</a>
+            <a href="{% url 'users:login' %}" class="btn btn-lg btn-primary mt-4">Data Managers Account</a>
         </div>
     </div>
 </div>
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row mt-4 mb-4">
+                <div class="col-12 text-center">
+                    <h4 class="font-size-24">PRIMARY HEALTH CARE NETWORKS (PCNs)</h4>
+                    <p class="card-subtitle">
+                        A PCN is an administrative health region established to efficiently  improve access to coordinated primary health care(PHC) services.
+                    </p>
+                </div>
+     
+    
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <!-- Image to cover the entire column -->
+                    <img src="{% static 'main/images/banner.png' %}" class="card-img-top" alt="pcns image">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <!-- Heading -->
+                        <h3 class="card-title">Primary Care Network Managing committee 
+                        </h3>
+        
+                        <!-- Ordered List -->
+                        <ul class="card-text">
+                            <li>SCHMT</li>
+                            <li>Private</li>
+                            <li>FBO</li>
+                            <li>Partners</li>
+                            <li>Community Rep</li>
+                            <li>Special Groups</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    </div>
+
+
 {% endblock content %}
