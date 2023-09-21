@@ -1,0 +1,224 @@
+{% extends 'main/base1.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h3 class="mb-0 font-size-18">Dashboard >> {{ partner.name }}</h3>
+                </div>
+            </div>
+        </div> 
+        
+        
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6 col-xl-2">
+                <div class="card bg-secondary border-secondary">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0 text-white">Total PCNs</h5>
+                        </div>
+                        <div class="row d-flex align-items-center mb-4">
+                            <div class="col-6">
+                                <h2 class="d-flex align-items-center text-white mb-0">
+                                    {{ all_pcns }}
+                                </h2>
+                            </div>
+                            <div class="col-6 text-right">
+                                <span class="text-white-50">100 %</span>
+                            </div>
+                        </div>
+    
+                        <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                            <div class="progress-bar bg-light" role="progressbar" style="width:100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end col-->
+          <div class="col-md-6 col-xl-2">
+              <div class="card bg-info border-info">
+                  <div class="card-body">
+                      <div class="mb-4">
+                          <h5 class="card-title mb-0 text-white">PCNs Support</h5>
+                      </div>
+                      <div class="row d-flex align-items-center mb-4">
+                          <div class="col-6">
+                              <h2 class="d-flex align-items-center text-white mb-0">
+                                  {{ partner_pcns }}
+                              </h2>
+                          </div>
+                          <div class="col-6 text-right">
+                              <span class="text-white-50">{{ partner_pcns_percentage }} % </i></span>
+                          </div>
+                      </div>
+
+                      <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ partner_pcns_percentage }}%;"></div>
+                      </div>
+                  </div>
+              </div>
+          </div> <!-- end col-->
+
+          <div class="col-md-6 col-xl-2">
+              <div class="card bg-success border-success">
+                  <div class="card-body">
+                      <div class="mb-4">
+                          <h5 class="card-title mb-0 text-white">Fully Established</h5>
+                      </div>
+                      <div class="row d-flex align-items-center mb-4">
+                          <div class="col-6">
+                              <h2 class="d-flex align-items-center text-white mb-0">
+                                  {{ fully_established }}
+                              </h2>
+                          </div>
+                          <div class="col-6 text-right">
+                              <span class="text-white-50">{{ fully_established_percentage }} %</span>
+                          </div>
+                      </div>
+
+                      <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ fully_established_percentage }}%;"></div>
+                      </div>
+                  </div>
+              </div>
+          </div> <!-- end col-->
+          <div class="col-md-6 col-xl-2">
+            <div class="card bg-warning border-warning">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0 text-white">In Process</h5>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <div class="col-6">
+                            <h2 class="d-flex align-items-center text-white mb-0">
+                                {{ in_progress }}
+                            </h2>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span class="text-white-50">{{ in_progress_percentage }} %</span>
+                        </div>
+                    </div>
+
+                    <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                        <div class="progress-bar bg-light" role="progressbar" style="width: {{ in_progress_percentage }}%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col-->
+
+        <div class="col-md-6 col-xl-2">
+          <div class="card bg-danger border-danger">
+              <div class="card-body">
+                  <div class="mb-4">
+                      <h5 class="card-title mb-0 text-white">Not Started</h5>
+                  </div>
+                  <div class="row d-flex align-items-center mb-4">
+                      <div class="col-6">
+                          <h2 class="d-flex align-items-center text-white mb-0">
+                              {{ not_started }}
+                          </h2>
+                      </div>
+                      <div class="col-6 text-right">
+                          <span class="text-white-50"> {{ not_started_percentage }} %</span>
+                      </div>
+                  </div>
+
+                  <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                      <div class="progress-bar bg-light" role="progressbar" style="width: {{ not_started_percentage }}%;"></div>
+                  </div>
+              </div>
+          </div>
+      </div> <!-- end col-->
+      </div>
+      <div class="row">
+        <div class="col-6">
+            <div class="card">
+               
+                <div class="card-body">
+                   
+                    <!-- Add this to your HTML template -->
+                    <canvas id="subcountiesByStatusChart" width="400" height="400"></canvas>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+              
+                    <div class="card-body">
+                        <!-- Add this to your HTML template -->
+                    <canvas id="partnerSubcountiesChart" width="400" height="200"></canvas>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row-->
+      <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                   <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="card-title">PCNs ACTION</h4>
+                        <p class="card-subtitle mb-4">
+                            The table below summarizes the PCNs Progress in {{ county.name }}
+                    </div>
+                   </div>
+            
+                   <table id="complex-header-datatable" class="table table-bordered dt-responsive nowrap">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>SubCounty</th>
+                            <th>Partner Support</th>
+                            <th>In Progress</th>
+                            <th>Fully Established</th>
+                            <th>Not Started</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subcounty in subcounties_associated %}
+                        <tr>
+                            <td>{{ subcounty.id }}</td>
+                            <td>{{ subcounty.name }}</td>
+                            <td>{% if subcounty.partners.all %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if subcounty.status == 1 %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if subcounty.status == 2 %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if subcounty.status == 0 %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="pagination pagination-sm">
+                    <span class="step-links">
+                        {% if subcounties_associated.has_previous %}
+                        <a href="?subcounties_page=1" class="btn btn-primary">&laquo; First</a>
+                        <a href="?subcounties_page={{ subcounties_associated.previous_page_number }}" class="btn btn-primary">Previous</a>
+                        {% endif %}
+                
+                        <span class="current-page">{{ subcounties_associated.number }}</span>
+                
+                        {% if subcounties_associated.has_next %}
+                        <a href="?subcounties_page={{ subcounties_associated.next_page_number }}" class="btn btn-primary">Next</a>
+                        <a href="?subcounties_page={{ subcounties_associated.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                
+                </div> <!-- end card body-->
+            </div> <!-- end card -->
+            
+        </div><!-- end col-->
+       
+    </div>
+    <!-- end row-->
+
+
+    
+
+    </div>
+</div>
+{% endblock content %}

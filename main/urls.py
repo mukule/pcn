@@ -13,6 +13,7 @@ urlpatterns = [
     path('map_details/<int:county_id>/', views.county, name='map_details'),
     path("graphs/", views.graphs, name="graphs"),
     path("partners/", views.partners, name="partners"),
+    path('partners/<int:partner_id>/', views.partner_dashboard, name='partner_dashboard'),
 
     
 ]

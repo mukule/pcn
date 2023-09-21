@@ -523,5 +523,66 @@ var partnerSupportPieChart = new Chart(ctx, {
     }
 </script>
 
+
+<script>
+  // Retrieve the JSON data from the context
+  var barChartData = {{ bar_chart_data_json|safe }};
+  
+  // Get the canvas element
+  var ctx = document.getElementById('subcountiesByStatusChart').getContext('2d');
+
+  // Define custom colors
+  var colors = ['red', 'yellow', 'green'];
+
+  // Create the bar chart
+  var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: barChartData.labels,
+      datasets: [{
+        label: 'Number of PCNs',
+        data: barChartData.data,
+        backgroundColor: colors,  // Use custom colors
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+    // Retrieve the JSON data from the context
+    var pieChartData = {{ pie_chart_data_json|safe }};
+  
+    // Get the canvas element
+    var ctx = document.getElementById('partnerSubcountiesChart').getContext('2d');
+  
+    // Create the pie chart
+    var myPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: pieChartData.labels,
+        datasets: [{
+          data: pieChartData.data,
+          backgroundColor: pieChartData.backgroundColor,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>

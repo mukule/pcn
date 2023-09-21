@@ -27,13 +27,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 18 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -44,13 +44,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 20 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -60,13 +60,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 22 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -76,13 +76,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 23 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -91,13 +91,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 24 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -107,13 +107,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 25 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -123,13 +123,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 26 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -138,13 +138,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 27 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -154,13 +154,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 28 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -170,13 +170,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 42 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -186,13 +186,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 33 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -202,13 +202,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 42 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -218,13 +218,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 39 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -235,13 +235,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 38 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -251,13 +251,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 37 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -267,13 +267,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 43 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -283,13 +283,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 32 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -299,13 +299,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 41 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -315,13 +315,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 37 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -331,13 +331,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 45 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -347,13 +347,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 46 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -363,13 +363,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 47 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -379,13 +379,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 47 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -395,13 +395,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 17 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -411,13 +411,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 16 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -426,9 +426,9 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 1 %}
-                {% if county.status == 0 %}
+                {% if county.status == 0 and county.ongoing == 0 %}
                     fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
+                    {% elif county.ongoing >= 1 %}
                     fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
                 {% elif county.status == 100 %}
                     fill: green; /* Fill green if status is 100 */
@@ -442,13 +442,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 2 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -458,13 +458,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 3 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -474,13 +474,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 4 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -490,13 +490,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 5 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -506,13 +506,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 6 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -522,13 +522,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 7 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -538,13 +538,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 8 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -554,13 +554,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 9 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -570,13 +570,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 10 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -586,13 +586,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 11 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -602,13 +602,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 12 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -618,13 +618,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 14 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -634,13 +634,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 47 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -650,13 +650,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 29 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -666,13 +666,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 13 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -682,13 +682,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 15 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -698,13 +698,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 36 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -714,13 +714,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 30 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -730,13 +730,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 35 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -746,13 +746,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 40 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }
@@ -762,13 +762,13 @@
         clip-rule: evenodd;
         {% for county in counties %}
             {% if county.id == 19 %}
-                {% if county.status == 0 %}
-                    fill: red; /* Fill red if status is 0 */
-                {% elif county.status >= 1 and county.status <= 99 %}
-                    fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
-                {% elif county.status == 100 %}
-                    fill: green; /* Fill green if status is 100 */
-                {% endif %}
+            {% if county.status == 0 and county.ongoing == 0 %}
+            fill: red; /* Fill red if status is 0 */
+            {% elif county.ongoing >= 1 %}
+            fill: blue; /* Fill blue if status is between 1 and 99 (inclusive) */
+        {% elif county.status == 100 %}
+            fill: green; /* Fill green if status is 100 */
+        {% endif %}
             {% endif %}
         {% endfor %}
     }

@@ -12,8 +12,10 @@ class County(models.Model):
     fully_established = models.PositiveIntegerField(default=0)
     partner_support = models.PositiveIntegerField(default=0)
     
-    # New status field with a default value of 0
+    # New status fields with default values of 0
     status = models.PositiveIntegerField(default=0)
+    ongoing = models.FloatField(default=0.0, verbose_name="started (%)")
+    
     styleid = models.CharField(max_length=10, unique=True, null=True)
     
     def __str__(self):

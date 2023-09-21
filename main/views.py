@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from phc.models import *
 from django.db.models import Count, Q, F
-from django.core.paginator import Paginator
+from django.core.paginator import *
 import json 
 from django.db.models import Count, Case, When, IntegerField
-import folium
+
+
+
 
 def index(request):
     return render(request, 'main/index.html')
@@ -55,8 +57,6 @@ def Update_status(request):
     except Exception as e:
         return HttpResponse(status=500)  # Return a 500 status code if an error occurs
     
-
-
 def status(request):
     try:
         counties = County.objects.all()
@@ -67,12 +67,22 @@ def status(request):
 
             if total_subcounties > 0:
                 fully_established_count = county.fully_established
-                percentage = (fully_established_count / total_subcounties) * 100
+                in_progress_count = county.in_progress
+                
+                # Calculate percentages
+                percentage_fully_established = (fully_established_count / total_subcounties) * 100
+                percentage_in_progress = (in_progress_count / total_subcounties) * 100
+                
+                # Round the percentages to 2 decimal places
+                percentage_fully_established = round(percentage_fully_established, 2)
+                percentage_in_progress = round(percentage_in_progress, 2)
             else:
-                percentage = 0
+                percentage_fully_established = 0
+                percentage_in_progress = 0
 
-            # Update the 'status' field with the calculated percentage
-            county.status = percentage
+            # Update the 'status' and 'ongoing' fields with the calculated percentages
+            county.status = percentage_fully_established
+            county.ongoing = percentage_in_progress
             county.save()
 
         return HttpResponse("County percentages updated successfully.", status=200)
@@ -80,9 +90,6 @@ def status(request):
         return HttpResponse("An error occurred while updating county percentages.", status=500)
 
 
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-import json  # Add this import at the beginning of your views.py
 
 def dashboard(request):
     # Execute the update_county_fields function to update the fields
@@ -182,7 +189,28 @@ def dashboard(request):
         # If page is out of range (e.g., 9999), deliver last page
         pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
 
-    # county_statuses_json = json.dumps(county_statuses)
+
+    partners = Partners.objects.all()
+
+    # Create a Paginator object for partners with 5 items per page
+    partners_per_page = 5
+    partners_paginator = Paginator(partners, partners_per_page)
+
+    # Get the current page number from the request's GET parameters for partners
+    partners_page_number = request.GET.get('partners_page')
+
+    try:
+        partners_page = partners_paginator.page(partners_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        partners_page = partners_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        partners_page = partners_paginator.page(partners_paginator.num_pages)
+
+    
+
+
 
     context = {
         'pcns': total_subcounties,
@@ -204,6 +232,7 @@ def dashboard(request):
         'status_counts': status_counts_json,
         'partner_labels': partner_labels_json,
         'partner_counts': partner_counts_json,
+        'partners': partners_page,
         
     }
 
@@ -280,6 +309,25 @@ def county_dashboard(request, county_id, subcounty_id=None):
     partner_labels = ['With Partners', 'Without Partners']
     partner_percentages = [partner_support_percentage, 100 - partner_support_percentage]
 
+    
+    partners = Partners.objects.all()
+
+    # Create a Paginator object for partners with 5 items per page
+    partners_per_page = 5
+    partners_paginator = Paginator(partners, partners_per_page)
+
+    # Get the current page number from the request's GET parameters for partners
+    partners_page_number = request.GET.get('partners_page')
+
+    try:
+        partners_page = partners_paginator.page(partners_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        partners_page = partners_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        partners_page = partners_paginator.page(partners_paginator.num_pages)
+
     context = {
         'county': county,
         'subcounties': subcounties,
@@ -298,6 +346,7 @@ def county_dashboard(request, county_id, subcounty_id=None):
         'status_percentages': json.dumps(status_percentages),  # Convert to JSON
         'partner_labels': json.dumps(partner_labels),  # Convert to JSON
         'partner_percentages': json.dumps(partner_percentages),  # Convert to JSON
+        'partners': partners_page
     }
 
     # Render the template and pass the relevant data to it
@@ -322,6 +371,8 @@ def map(request):
     # Retrieve the count of subcounties with partners
     subcounties_with_partners_count = Subcounty.objects.annotate(partner_count=Count('partners')).filter(partner_count__gt=0).count()
 
+
+
     # Calculate the percentages
     if total_subcounties > 0:
         total_subcounties = float(total_subcounties)  # Convert to float for accurate percentage calculation
@@ -337,7 +388,43 @@ def map(request):
         subcounties_with_partners_percentage = 0.00
         total_subcounties_with_percentage = 0.00
 
-    print(fully_established_percentage)
+    
+    partners = Partners.objects.all()
+
+    # Create a Paginator object for partners with 5 items per page
+    partners_per_page = 5
+    partners_paginator = Paginator(partners, partners_per_page)
+
+    # Get the current page number from the request's GET parameters for partners
+    partners_page_number = request.GET.get('partners_page')
+
+    try:
+        partners_page = partners_paginator.page(partners_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        partners_page = partners_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        partners_page = partners_paginator.page(partners_paginator.num_pages)
+
+    pcns_per_county = County.objects.all()
+    
+    # Create a Paginator object for pcns per county with 5 items per page
+    pcns_per_county_per_page = 5  # Number of pcns per county to display per page
+    pcns_per_county_paginator = Paginator(pcns_per_county, pcns_per_county_per_page)
+
+    # Get the current page number from the request's GET parameters for pcns per county
+    pcns_per_county_page_number = request.GET.get('pcns_per_county_page')
+
+    try:
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        pcns_per_county_page = pcns_per_county_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
+
       
     context = {
         'counties': counties,
@@ -345,7 +432,9 @@ def map(request):
         'not_started_percentage':not_started_percentage,
         'in_progress_percentage':in_progress_percentage,
         'fully_established_percentage':fully_established_percentage,
-        'subcounties_with_partners_percentage':subcounties_with_partners_percentage
+        'subcounties_with_partners_percentage':subcounties_with_partners_percentage,
+        'partners': partners_page,
+        'county_pcns': pcns_per_county_page,
     }
     return render(request, 'main/map.html', context)
 
@@ -417,6 +506,45 @@ def graphs(request):
     partner_labels = ['With Partners', 'Without Partners']
     partner_percentages = [subcounties_with_partners_percentage, 100 - subcounties_with_partners_percentage]
 
+    
+    partners = Partners.objects.all()
+
+    # Create a Paginator object for partners with 5 items per page
+    partners_per_page = 5
+    partners_paginator = Paginator(partners, partners_per_page)
+
+    # Get the current page number from the request's GET parameters for partners
+    partners_page_number = request.GET.get('partners_page')
+
+    try:
+        partners_page = partners_paginator.page(partners_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        partners_page = partners_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        partners_page = partners_paginator.page(partners_paginator.num_pages)
+
+    pcns_per_county = County.objects.all()
+    
+    # Create a Paginator object for pcns per county with 5 items per page
+    pcns_per_county_per_page = 5  # Number of pcns per county to display per page
+    pcns_per_county_paginator = Paginator(pcns_per_county, pcns_per_county_per_page)
+
+    # Get the current page number from the request's GET parameters for pcns per county
+    pcns_per_county_page_number = request.GET.get('pcns_per_county_page')
+
+    try:
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        pcns_per_county_page = pcns_per_county_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
+
+
+
     context = {
         'total_subcounties': total_subcounties,
         'not_started_count': not_started_count,
@@ -432,6 +560,8 @@ def graphs(request):
         'status_percentages': json.dumps(status_percentages),  # Convert to JSON
         'partner_labels': json.dumps(partner_labels),  # Convert to JSON
         'partner_percentages': json.dumps(partner_percentages),  # Convert to JSON
+        'partners': partners_page,
+        'county_pcns':pcns_per_county_page
     }
 
     # Render the template and pass the relevant data to it
@@ -474,10 +604,190 @@ def partners(request):
     partner_labels_json = json.dumps(partner_labels)
     partner_counts_json = json.dumps(partner_counts)
 
+    
+    partners = Partners.objects.all()
+
+    # Create a Paginator object for partners with 5 items per page
+    partners_per_page = 5
+    partners_paginator = Paginator(partners, partners_per_page)
+
+    # Get the current page number from the request's GET parameters for partners
+    partners_page_number = request.GET.get('partners_page')
+
+    try:
+        partners_page = partners_paginator.page(partners_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        partners_page = partners_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        partners_page = partners_paginator.page(partners_paginator.num_pages)
+    
+    pcns_per_county = County.objects.all()
+    
+    # Create a Paginator object for pcns per county with 5 items per page
+    pcns_per_county_per_page = 5  # Number of pcns per county to display per page
+    pcns_per_county_paginator = Paginator(pcns_per_county, pcns_per_county_per_page)
+
+    # Get the current page number from the request's GET parameters for pcns per county
+    pcns_per_county_page_number = request.GET.get('pcns_per_county_page')
+
+    try:
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        pcns_per_county_page = pcns_per_county_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
+
+
     context = {
         'partners_with_subcounty_count_json': data_json,
         'partner_labels': partner_labels_json,
         'partner_counts': partner_counts_json,
+        'partners': partners_page,
+        'county_pcns':pcns_per_county_page
     }
 
     return render(request, 'main/partners.html', context)
+
+
+def partner_dashboard(request, partner_id):
+    # Retrieve the specific partner using its ID or any other unique identifier
+    partner = get_object_or_404(Partners, id=partner_id)
+
+    # Retrieve all subcounties associated with this partner
+    subcounties_associated = Subcounty.objects.filter(partners=partner)
+
+    # Calculate the total number of subcounties associated with this partner
+    total_subcounties_associated = subcounties_associated.count()
+
+    # Calculate the percentage
+    total_subcounties_percentage = 0.00
+    if total_subcounties_associated > 0:
+        total_subcounties_percentage = round((total_subcounties_associated / Subcounty.objects.count()) * 100, 2)
+
+    # Retrieve all available subcounties
+    all_subcounties = Subcounty.objects.count()
+
+    # Calculate the number and percentage of subcounties in each status category
+    not_started_count = subcounties_associated.filter(status=0).count()
+    in_progress_count = subcounties_associated.filter(status=1).count()
+    fully_established_count = subcounties_associated.filter(status=2).count()
+
+    not_started_percentage = 0.00
+    in_progress_percentage = 0.00
+    fully_established_percentage = 0.00
+
+    if total_subcounties_associated > 0:
+        not_started_percentage = round((not_started_count / total_subcounties_associated) * 100, 2)
+        in_progress_percentage = round((in_progress_count / total_subcounties_associated) * 100, 2)
+        fully_established_percentage = round((fully_established_count / total_subcounties_associated) * 100, 2)
+
+    partners = Partners.objects.all()
+
+    # Create a Paginator object for partners with 5 items per page
+    partners_per_page = 5
+    partners_paginator = Paginator(partners, partners_per_page)
+
+    # Get the current page number from the request's GET parameters for partners
+    partners_page_number = request.GET.get('partners_page')
+
+    try:
+        partners_page = partners_paginator.page(partners_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        partners_page = partners_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        partners_page = partners_paginator.page(partners_paginator.num_pages)
+    
+    pcns_per_county = County.objects.all()
+    
+    # Create a Paginator object for pcns per county with 5 items per page
+    pcns_per_county_per_page = 5  # Number of pcns per county to display per page
+    pcns_per_county_paginator = Paginator(pcns_per_county, pcns_per_county_per_page)
+
+    # Get the current page number from the request's GET parameters for pcns per county
+    pcns_per_county_page_number = request.GET.get('pcns_per_county_page')
+
+    try:
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        pcns_per_county_page = pcns_per_county_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
+
+     # Calculate the number of subcounties in each status category
+    not_started_count = subcounties_associated.filter(status=0).count()
+    in_progress_count = subcounties_associated.filter(status=1).count()
+    fully_established_count = subcounties_associated.filter(status=2).count()
+
+    # Prepare data for the bar chart
+    bar_chart_data = {
+        'labels': ['Not Started', 'In Progress', 'Fully Established'],
+        'data': [not_started_count, in_progress_count, fully_established_count],
+    }
+
+   
+     # Calculate the percentage supported by the partner
+    percentage_supported = 0.00
+    if all_subcounties > 0:
+        percentage_supported = round((total_subcounties_associated / all_subcounties) * 100, 2)
+
+    # Prepare data for the pie chart with percentages
+    pie_chart_data = {
+        'labels': ['Supported by Partner', 'Not Supported by Partner'],
+        'data': [percentage_supported, 100 - percentage_supported],  # Calculate the percentage not supported
+        'backgroundColor': ['green', 'red'],  # Green for supported, red for not supported
+    }
+
+
+    # Convert the data to JSON
+    bar_chart_data_json = json.dumps(bar_chart_data)
+    pie_chart_data_json = json.dumps(pie_chart_data)
+
+   # Retrieve all subcounties associated with this partner
+    subcounties_associated = Subcounty.objects.filter(partners=partner)
+
+    # Create a Paginator object for subcounties with 10 items per page
+    subcounties_per_page = 10
+    subcounties_paginator = Paginator(subcounties_associated, subcounties_per_page)
+
+    # Get the current page number from the request's GET parameters for subcounties
+    subcounties_page_number = request.GET.get('subcounties_page')
+
+    try:
+        subcounties_page = subcounties_paginator.page(subcounties_page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        subcounties_page = subcounties_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page
+        subcounties_page = subcounties_paginator.page(subcounties_paginator.num_pages)
+
+
+    # Create context data to pass to the template
+    context = {
+        'partner': partner,
+        'partners': partners_page,
+        'partner_pcns': total_subcounties_associated,
+        'partner_pcns_percentage': total_subcounties_percentage,
+        'all_pcns': all_subcounties,
+        'not_started': not_started_count,
+        'in_progress': in_progress_count,
+        'fully_established': fully_established_count,
+        'not_started_percentage': not_started_percentage,
+        'in_progress_percentage': in_progress_percentage,
+        'fully_established_percentage': fully_established_percentage,
+        'subcounties_associated': subcounties_page,
+        'county_pcns': pcns_per_county_page,
+        'bar_chart_data_json': bar_chart_data_json,
+        'pie_chart_data_json': pie_chart_data_json,
+    }
+
+    # Render the template and pass the relevant data to it
+    return render(request, 'main/partner_dashboard.html', context)

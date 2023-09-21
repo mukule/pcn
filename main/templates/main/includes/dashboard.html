@@ -16,6 +16,45 @@
 
         <div class="d-flex align-items-center">
 
+            <div class="dropdown d-inline-block">
+                <button type="button" class="btn header-item waves-effect waves-light dropdown-toggle" id="page-header-user-dropdown"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-handshake"></i>
+                    <span class="d-none d-sm-inline-block ml-1">Partners</span>
+                    <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    {% for county in partners %}
+                    <a href="{% url 'main:partner_dashboard' county.id %}" class="dropdown-item notify-item">
+
+                        <i class="fas fa-smile text-danger"></i>
+                           <span class="align-middle">{{ county.name }}</span>
+                    </a>
+                    {% endfor %}
+            
+                    <!-- Pagination links -->
+                  <div class="card-footer">
+                    <div class="pagination pagination-sm">
+                        <span class="page-item">
+                            {% if county_pcns.has_previous %}
+                                <a href="?pcns_per_county_page=1" class="page-link waves-effect" aria-label="First">
+                                    <span aria-hidden="true">&laquo;</span> 1
+                                </a>
+                                <a href="?pcns_per_county_page={{ county_pcns.previous_page_number }}" class="page-link waves-effect" aria-label="Previous">previous</a>
+                            {% endif %}
+                    
+                            <span class="page-item active">{{ county_pcns.number }}</span>
+                    
+                            {% if county_pcns.has_next %}
+                                <a href="?pcns_per_county_page={{ county_pcns.next_page_number }}" class="page-link waves-effect" aria-label="Next">next</a>
+                                <a href="?pcns_per_county_page={{ county_pcns.paginator.num_pages }}" class="page-link waves-effect" aria-label="Last">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                  </div>
+                    
+                </div>
+            </div>
 
           
             <div class="dropdown d-inline-block">
@@ -29,7 +68,7 @@
                     {% for county in county_pcns %}
                     <a href="{% url 'main:county' county.id %}" class="dropdown-item notify-item">
 
-                        <i class="fas fa-flag"></i>
+                        <i class="fas fa-flag text-danger"></i>
                            <span class="align-middle">{{ county.name }}</span>
                     </a>
                     {% endfor %}
