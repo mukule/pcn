@@ -459,7 +459,6 @@ var partnerSupportPieChart = new Chart(ctx, {
     });
 </script>
 
-
 <script>
     var ctx = document.getElementById('partnerDonutChart').getContext('2d');
     
@@ -475,17 +474,16 @@ var partnerSupportPieChart = new Chart(ctx, {
         return partner.subcounty_count;
     });
 
+    // Generate an array of dynamic colors based on the number of partners
+    var dynamicColors = generateDynamicColors(partnerNames.length);
+
     var donutChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: partnerNames,
             datasets: [{
                 data: subcountyCounts,
-                backgroundColor: [
-                    '#FF5733',   // Not Started (Red)
-                    '#FFC107',   // In Progress (Blue)
-                    '#28A745',   // Fully Established (Green)
-                ],
+                backgroundColor: dynamicColors,
             }],
         },
         options: {
@@ -494,27 +492,36 @@ var partnerSupportPieChart = new Chart(ctx, {
             title: {
                 display: true,
                 text: 'Partner Subcounty Counts',
-                position: 'top', // Position the title at the top of the chart
+                position: 'top',
                 fontSize: 16,
             },
             legend: {
                 display: true,
-                position: 'right', // Position the legend on the right side
+                position: 'right',
             },
             plugins: {
                 datalabels: {
                     formatter: function(value, context) {
-                        return value + '%'; // Display the value (percentage) on each slice
+                        return value + '%';
                     },
-                    color: '#fff', // Text color
-                    anchor: 'end', // Position of the label relative to the data point (end for the end of the slice)
-                    align: 'start', // Position of the label text relative to the anchor (start for the start of the label)
+                    color: '#fff',
+                    anchor: 'end',
+                    align: 'start',
                 },
             },
         },
     });
-</script>
 
+    // Function to generate dynamic colors
+    function generateDynamicColors(numColors) {
+        var colors = [];
+        for (var i = 0; i < numColors; i++) {
+            var color = 'hsl(' + (i * 360 / numColors) + ', 100%, 50%)';
+            colors.push(color);
+        }
+        return colors;
+    }
+</script>
 
 </body>
 </html>

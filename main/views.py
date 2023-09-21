@@ -354,7 +354,7 @@ def county(request, county_id):
     counties = County.objects.all()
 
     # Calculate the total number of subcounties for the specific county
-    total_subcounties = county.not_started + county.in_progress + county.fully_established + county.partner_support
+    total_subcounties = Subcounty.objects.filter(county=county).count()
 
     # Calculate percentages
     percentage_not_started = round((county.not_started / total_subcounties) * 100, 1) if total_subcounties > 0 else 0.0
