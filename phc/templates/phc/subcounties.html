@@ -16,8 +16,17 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
-                    <h3 class="mb-0 font-size-18">All Subcounties</h3>
+                    <h3 class="mb-0 font-size-18">All Subcounties ({{ subcounties_count }})</h3>
+                    <form method="GET" action="" class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <input type="text" name="subcounty_name" class="form-control" placeholder="Search Subcounties">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Search</button>
+                    </form>
                 </div>
+               
+                  
+            
                 {% if subcounties %}
                 <table class="table table-bordered">
                     <thead>
@@ -33,9 +42,7 @@
                         {% for subcounty in subcounties %}
                         <tr>
                             <td>{{ subcounty.id }}</td>
-                            <td>
-                                {{ subcounty.name }}
-                            </td>
+                            <td>{{ subcounty.name }}</td>
                             <td>
                                 {% if subcounty.partners.exists %}
                                     {% for partner in subcounty.partners.all %}
@@ -48,15 +55,16 @@
                             </td>
                             <td>
                                 {% if subcounty.status == 0 %}
-                                Not Started
-                              {% elif subcounty.status == 1 %}
-                                In Progress
-                              {% elif subcounty.status == 2 %}
-                                Fully Established
-                              {% endif %}
+                                    Not Started
+                                {% elif subcounty.status == 1 %}
+                                    In Progress
+                                {% elif subcounty.status == 2 %}
+                                    Fully Established
+                                {% endif %}
+                            </td>
                             <td>
                                 <a class="btn btn-lg btn-danger" href="{% url 'phc:edit_subcounty' county_id=subcounty.county.id subcounty_id=subcounty.id %}">
-                                    Update Status/Patners
+                                    Update Status/Partners
                                 </a>
                             </td>
                         </tr>
@@ -64,24 +72,23 @@
                     </tbody>
                 </table>
                 
-                    
-                    <div class="pagination">
-                        <span class="step-links">
-                            {% if subcounties.has_previous %}
-                                <a href="?page=1">&laquo; first</a>
-                                <a href="?page={{ subcounties.previous_page_number }}">previous</a>
-                            {% endif %}
-                            
-                            <span class="current-page">
-                                Page {{ subcounties.number }} of {{ subcounties.paginator.num_pages }}.
-                            </span>
-                            
-                            {% if subcounties.has_next %}
-                                <a href="?page={{ subcounties.next_page_number }}">next</a>
-                                <a href="?page={{ subcounties.paginator.num_pages }}">last &raquo;</a>
-                            {% endif %}
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if subcounties.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ subcounties.previous_page_number }}">previous</a>
+                        {% endif %}
+                        
+                        <span class="current-page">
+                            Page {{ subcounties.number }} of {{ subcounties.paginator.num_pages }}.
                         </span>
-                    </div>
+                        
+                        {% if subcounties.has_next %}
+                            <a href="?page={{ subcounties.next_page_number }}">next</a>
+                            <a href="?page={{ subcounties.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
                 {% else %}
                     <p>We have not created any subcounties yet. Add them.</p>
                 {% endif %}

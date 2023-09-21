@@ -67,16 +67,52 @@ def edit_subcounty(request, county_id, subcounty_id):
 @login_required
 def counties(request):
     counties_list = County.objects.all()
+
+    # Get the search query from the URL (e.g., /counties/?search=desired_county)
+    search_query = request.GET.get('search')
+
+    # If a search query is provided, filter the queryset based on the county name
+    if search_query:
+        counties_list = counties_list.filter(name__icontains=search_query)
+
     paginator = Paginator(counties_list, 10)  # Paginate by 10 counties per page
     page = request.GET.get('page')
     counties = paginator.get_page(page)
-    return render(request, 'phc/counties.html', {'counties': counties})
+    
+    return render(request, 'phc/counties.html', {'counties': counties, 'search_query': search_query})
 
 @login_required
 def county(request, county_id):
     county = get_object_or_404(County, pk=county_id)
-    subcounties = county.subcounty_set.all()
-    return render(request, 'phc/county.html', {'county': county, 'subcounties': subcounties})
+    
+    # Get the search query for subcounty names
+    subcounty_name = request.GET.get('subcounty_name')
+    
+    # Retrieve all subcounties associated with the county
+    subcounties_list = county.subcounty_set.all()
+    
+    # Apply subcounty name filter if provided
+    if subcounty_name:
+        subcounties_list = subcounties_list.filter(name__icontains=subcounty_name)
+    
+    # Count the number of subcounties for this county (including the filter)
+    subcounties_count = subcounties_list.count()
+    
+    # Create a paginator for subcounties, paginating by 10 per page
+    paginator = Paginator(subcounties_list, 10)
+    page = request.GET.get('page')
+    subcounties = paginator.get_page(page)
+    
+    return render(
+        request,
+        'phc/county.html',
+        {
+            'county': county,
+            'subcounties': subcounties,
+            'subcounty_name': subcounty_name,
+            'subcounties_count': subcounties_count
+        }
+    )
 
 @login_required
 def subcounties(request):
@@ -91,6 +127,9 @@ def subcounties(request):
     if county_name:
         subcounties_list = subcounties_list.filter(county__name__icontains=county_name)
 
+    # Count the number of subcounties that match the filter criteria
+    subcounties_count = subcounties_list.count()
+
     paginator = Paginator(subcounties_list, 10)
     page = request.GET.get('page')
     subcounties = paginator.get_page(page)
@@ -98,9 +137,13 @@ def subcounties(request):
     return render(
         request,
         'phc/subcounties.html',
-        {'subcounties': subcounties, 'subcounty_name': subcounty_name, 'county_name': county_name}
+        {
+            'subcounties': subcounties,
+            'subcounty_name': subcounty_name,
+            'county_name': county_name,
+            'subcounties_count': subcounties_count  # Add the count to the context
+        }
     )
-
 
 
 
@@ -132,6 +175,7 @@ def partners(request):
 def subcounty(request, subcounty_id):
     subcounty = get_object_or_404(Subcounty, pk=subcounty_id)
     return render(request, 'phc/subcounty.html', {'subcounty': subcounty})
+
 @login_required
 def update_county_progress(subcounty):
     county = subcounty.county

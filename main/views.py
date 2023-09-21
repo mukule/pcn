@@ -336,6 +336,8 @@ def map(request):
         fully_established_percentage = 0.00
         subcounties_with_partners_percentage = 0.00
         total_subcounties_with_percentage = 0.00
+
+    print(fully_established_percentage)
       
     context = {
         'counties': counties,
@@ -355,10 +357,10 @@ def county(request, county_id):
     total_subcounties = county.not_started + county.in_progress + county.fully_established + county.partner_support
 
     # Calculate percentages
-    percentage_not_started = (county.not_started / total_subcounties) * 100 if total_subcounties > 0 else 0.0
-    percentage_in_progress = (county.in_progress / total_subcounties) * 100 if total_subcounties > 0 else 0.0
-    percentage_fully_established = (county.fully_established / total_subcounties) * 100 if total_subcounties > 0 else 0.0
-    percentage_partner_support = (county.partner_support / total_subcounties) * 100 if total_subcounties > 0 else 0.0
+    percentage_not_started = round((county.not_started / total_subcounties) * 100, 1) if total_subcounties > 0 else 0.0
+    percentage_in_progress = round((county.in_progress / total_subcounties) * 100, 1) if total_subcounties > 0 else 0.0
+    percentage_fully_established = round((county.fully_established / total_subcounties) * 100, 1) if total_subcounties > 0 else 0.0
+    percentage_partner_support = round((county.partner_support / total_subcounties) * 100, 1) if total_subcounties > 0 else 0.0
 
     context = {
         'county': county,

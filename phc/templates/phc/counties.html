@@ -18,6 +18,12 @@
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
                     <h3 class="mb-0 font-size-18">List of Counties</h3>
+                    <form method="GET" action="{% url 'phc:counties' %}" class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <input type="text" name="search" class="form-control" placeholder="Search by County Name">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Search</button>
+                    </form>
                 </div>
                 {% if counties %}
                     <table class="table table-bordered">
