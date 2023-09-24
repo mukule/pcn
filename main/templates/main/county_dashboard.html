@@ -14,7 +14,7 @@
         
         
         <div class="row justify-content-center align-items-center">
-            <div class="col-md-6 col-xl-2">
+            <div class="col-md-6 col-xl-3">
                 <div class="card bg-secondary border-secondary">
                     <div class="card-body">
                         <div class="mb-4">
@@ -37,31 +37,8 @@
                     </div>
                 </div>
             </div> <!-- end col-->
-          <div class="col-md-6 col-xl-2">
-              <div class="card bg-info border-info">
-                  <div class="card-body">
-                      <div class="mb-4">
-                          <h5 class="card-title mb-0 text-white">Partner Support</h5>
-                      </div>
-                      <div class="row d-flex align-items-center mb-4">
-                          <div class="col-6">
-                              <h2 class="d-flex align-items-center text-white mb-0">
-                                  {{ pcn_with_partners }}
-                              </h2>
-                          </div>
-                          <div class="col-6 text-right">
-                              <span class="text-white-50">{{ pcns_with_partners_percentage }} % </i></span>
-                          </div>
-                      </div>
 
-                      <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                          <div class="progress-bar bg-light" role="progressbar" style="width: {{ pcns_with_partners_percentage }}%;"></div>
-                      </div>
-                  </div>
-              </div>
-          </div> <!-- end col-->
-
-          <div class="col-md-6 col-xl-2">
+          <div class="col-md-6 col-xl-3">
               <div class="card bg-success border-success">
                   <div class="card-body">
                       <div class="mb-4">
@@ -84,7 +61,7 @@
                   </div>
               </div>
           </div> <!-- end col-->
-          <div class="col-md-6 col-xl-2">
+          <div class="col-md-6 col-xl-3">
             <div class="card bg-warning border-warning">
                 <div class="card-body">
                     <div class="mb-4">
@@ -108,7 +85,7 @@
             </div>
         </div> <!-- end col-->
 
-        <div class="col-md-6 col-xl-2">
+        <div class="col-md-6 col-xl-3">
           <div class="card bg-danger border-danger">
               <div class="card-body">
                   <div class="mb-4">
@@ -137,7 +114,7 @@
             <div class="card">
                 <div class="card-header text-center">Implementing Partner Summery</div>
                 <div class="card-body">
-                    <canvas id="partnerSupportPieChart" width="400" height="400"></canvas>
+                    <canvas id="partnerSummaryDonutChart" width="400" height="400"></canvas>
 
                 </div>
             </div>
@@ -148,7 +125,7 @@
                     Implementation Progress
                 </div>
                     <div class="card-body">
-                        <canvas id="statusPieChart" width="400" height="400"></canvas>
+                        <canvas id="county_status" width="400" height="400"></canvas>
                     </div>
             </div>
         </div>
@@ -171,9 +148,8 @@
                         <tr>
                             <th>ID</th>
                             <th>SubCounty</th>
-                            <th>Partner Support</th>
-                            <th>In Progress</th>
                             <th>Fully Established</th>
+                            <th>In Progress</th>
                             <th>Not Started</th>
                         </tr>
                     </thead>
@@ -182,9 +158,8 @@
                         <tr>
                             <td>{{ county.id }}</td>
                             <td>{{ county.name }}</td>
-                            <td>{% if county.partners.all %}Yes{% else %}No{% endif %}</td>
-                            <td>{% if county.status == 1 %}Yes{% else %}No{% endif %}</td>
                             <td>{% if county.status == 2 %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if county.status == 1 %}Yes{% else %}No{% endif %}</td>
                             <td>{% if county.status == 0 %}Yes{% else %}No{% endif %}</td>
                         </tr>
                         {% endfor %}

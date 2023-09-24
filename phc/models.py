@@ -22,9 +22,15 @@ class County(models.Model):
         return self.name
 
 
-    
+class Donor(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class Partners(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    donor = models.ForeignKey(Donor, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name

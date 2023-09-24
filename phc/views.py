@@ -145,6 +145,31 @@ def subcounties(request):
         }
     )
 
+@login_required
+def create_donor(request):
+    if request.method == 'POST':
+        form = DonorForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the Donor object
+            messages.success(request, 'Donor added successfully. You may add another one.')  # Add success message
+            return redirect('phc:create_donor')
+        else:
+            messages.error(request, 'Error adding the donor. Please correct the errors below.')  # Add error message
+    else:
+        form = DonorForm()
+    
+    return render(request, 'phc/create_donors.html', {'form': form})
+
+@login_required
+def donors(request):
+    # Retrieve all donors from the database
+    all_donors = Donor.objects.all()
+
+    context = {
+        'donors': all_donors,
+    }
+
+    return render(request, 'phc/donors.html', context)
 
 
 @login_required
@@ -169,6 +194,30 @@ def partners(request):
     page = request.GET.get('page')
     partners = paginator.get_page(page)
     return render(request, 'phc/partners.html', {'partners': partners})
+
+
+def edit_partner(request, partner_id):
+    # Retrieve the partner object using its ID or any other unique identifier
+    partner = get_object_or_404(Partners, id=partner_id)
+
+    if request.method == 'POST':
+        form = PartnersForm(request.POST, instance=partner)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Partner updated successfully.')
+            return redirect('phc:partners')  # Redirect to a view that lists partners
+        else:
+            messages.error(request, 'Error updating partner. Please check the form.')
+    else:
+        form = PartnersForm(instance=partner)
+
+    context = {
+        'form': form,
+        'partner': partner,
+    }
+
+    return render(request, 'phc/edit_partner.html', context)
+
 
 
 @login_required

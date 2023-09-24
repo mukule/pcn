@@ -19,40 +19,30 @@
                     <h3 class="mb-0 font-size-18">List of Partners</h3>
                 </div>
                 {% if partners %}
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for partner in partners %}
-                            <tr>
-                                <td>{{ partner.id }}</td>
-                                <td>{{ partner.name }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for partner in partners %}
+                        <tr>
+                            <td>{{ partner.id }}</td>
+                            <td>{{ partner.name }}</td>
+                            <td>
+                                <a href="{% url 'phc:edit_partner' partner.id %}">
+                                    <i class="fas fa-pencil-alt"></i> Edit
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
                     
-                    <div class="pagination">
-                        <span class="step-links">
-                            {% if partners.has_previous %}
-                                <a href="?page=1">&laquo; first</a>
-                                <a href="?page={{ partners.previous_page_number }}">previous</a>
-                            {% endif %}
-                            
-                            <span class="current-page">
-                                Page {{ partners.number }} of {{ partners.paginator.num_pages }}.
-                            </span>
-                            
-                            {% if partners.has_next %}
-                                <a href="?page={{ partners.next_page_number }}">next</a>
-                                <a href="?page={{ partners.paginator.num_pages }}">last &raquo;</a>
-                            {% endif %}
-                        </span>
-                    </div>
                 {% else %}
                     <p>No partners available.</p>
                 {% endif %}

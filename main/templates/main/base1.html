@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="{% static 'main/css/icons.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'main/css/theme.min.css' %}" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Include Leaflet CSS and JavaScript -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
@@ -49,7 +52,7 @@
     <!-- App js -->
     <script src="{% static 'main/js/theme.css' %}"></script>
     <script src="{% static 'main/js/car_form.js' %}"></script>
-    <script src="{% static 'main/js/pages/chartjs-demo.js' %}"></script>
+    <!-- <script src="{% static 'main/js/pages/chartjs-demo.js' %}"></script> -->
     <script src="{% static 'main/js/map.js' %}"></script>
 
     <script src="{% static 'main/js/jspdf.debug.js' %}"></script>
@@ -76,6 +79,7 @@
     var partnerColors = ['#007BFF', '#FF5733']; // Blue for "With Partners," Red for "Without Partners"
 
     // Create the Chart.js pie chart for "Partner Support"
+    Chart.register(ChartDataLabels);
     var ctxPartner = document.getElementById('partnerSupportPieChart').getContext('2d');
     var partnerSupportPieChart = new Chart(ctxPartner, {
         type: 'pie',
@@ -98,52 +102,77 @@
                 text: 'Subcounties with/without Partners',
                 position: 'bottom',
                 fontSize: 16,
-            }
+            },
+            plugins: {
+                datalabels: {
+                    display: true, // Display labels on each section
+                    color: 'white', // Color of the labels
+                    font: {
+                        size: 14 // Font size of the labels
+                    },
+                    formatter: function(value, context) {
+                        return value + '%'; // Format the label to include a percentage sign
+                    }
+                }
+            },
         }
     });
 </script>
 
 
 <script>
-  var ctx = document.getElementById('partnerSupportPieChart').getContext('2d');
-var partnerSupportPieChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: partnerLabels,
-        datasets: [{
-            data: partnerCounts,
-            backgroundColor: partnerColors,
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        legend: {
-            display: true,
-            position: 'right',
+    // Data for the donut chart (Partner Summary)
+    var partnerData = {{ partner_summery|safe }};
+    
+    // Extract partner names and percentages from the data
+    var partnerNames = partnerData.map(function(item) { return item.name; });
+    var partnerPercentages = partnerData.map(function(item) { return parseFloat(item.percentage); });
+    
+    // Colors for the donut chart
+    var donutColors = ['#007BFF', '#FF5733', '#33FF49', '#FF33EC', '#33FFEC']; // Add more colors as needed
+    
+    // Create the Chart.js donut chart for "Partner Summary"
+    Chart.register(ChartDataLabels);
+    var ctxDonut = document.getElementById('partnerSummaryDonutChart').getContext('2d');
+    var partnerSummaryDonutChart = new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+            labels: partnerNames,
+            datasets: [{
+                data: partnerPercentages,
+                backgroundColor: donutColors,
+            }]
         },
-        title: {
-            display: true,
-            text: 'Subcounties with/without Partners',
-            position: 'bottom',
-            fontSize: 16,
-        },
-        plugins: {
-            datalabels: {
-                formatter: (value, context) => {
-                    return value + '%'; // Format the label to include a percentage sign
-                },
-                color: '#fff', // Text color
-                anchor: 'end', // Position of the label relative to the data point (end for the end of the slice)
-                align: 'start', // Position of the label text relative to the anchor (start for the start of the label)
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: true,
+                position: 'right',
             },
-        },
-    }
-});
-
+            title: {
+                display: true,
+                text: 'Partner Summary',
+                position: 'bottom',
+                fontSize: 16,
+            },
+            plugins: {
+                datalabels: {
+                    display: true, // Display labels on each section
+                    color: 'white', // Color of the labels
+                    font: {
+                        size: 14 // Font size of the labels
+                    },
+                    formatter: function(value, context) {
+                        return value + '%'; // Format the label to include a percentage sign
+                    }
+                }
+            },
+        }
+    });
 </script>
 
-    
+
 
     <!-- Add this to your HTML template -->
     <script>
@@ -182,82 +211,8 @@ var partnerSupportPieChart = new Chart(ctx, {
 
 
 <script>
-    var statusLabels = JSON.parse('{{ status_labels|safe }}');
-    var statusCounts = JSON.parse('{{ status_counts|safe }}');
-
-    // Define an array of custom color codes for each status
-    var statusColors = [
-        '#FF5733',   // Not Started (Red)
-        '#FFC107' ,  // In Progress (Blue)
-        '#28A745',   // Fully Established (Green)
-        '#007BFF',     // Partner Support (Yellow)
-    ];
-
-    // Create the Chart.js pie chart
-    var ctx = document.getElementById('statusPieChart').getContext('2d');
-    var myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: statusLabels,
-            datasets: [{
-                data: statusCounts,
-                backgroundColor: statusColors
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                display: true,
-                position: 'right'
-            },
-            plugins: {
-                datalabels: {
-                    color: 'white', // Color of the figures
-                    font: {
-                        size: 12 // Font size of the figures
-                    },
-                    formatter: function(value, context) {
-                        return value; // Display the value (count) on each section
-                    }
-                }
-            },
-            title: {
-                display: true,
-                text: 'Subcounty Status',
-                position: 'bottom',
-                fontSize: 16
-            }
-        }
-    });
-</script>
-
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#county-search').on('input', function() {
-            // Get the search input value
-            var searchValue = $(this).val().toLowerCase();
-
-            // Filter the county list based on the search input
-            $('#county-list tr').each(function() {
-                var countyName = $(this).find('td:eq(1)').text().toLowerCase();
-                if (countyName.includes(searchValue)) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-        });
-    });
-</script>
-
-
-<script>
-    var ctx = document.getElementById('statusPieChart').getContext('2d');
+    Chart.register(ChartDataLabels);
+    var ctx = document.getElementById('county_status').getContext('2d');
     var subcountyStatusPieChart = new Chart(ctx, {
         type: 'pie',
         data: {
@@ -300,15 +255,219 @@ var partnerSupportPieChart = new Chart(ctx, {
 </script>
 
 
+<script>
+    var statusLabels = JSON.parse('{{ status_labels|safe }}');
+    var statusCounts = JSON.parse('{{ status_counts|safe }}');
+
+    // Define an array of custom color codes for each status
+    var statusColors = [
+        '#FF5733',   // Not Started (Red)
+        '#FFC107',   // In Progress (Blue)
+        '#28A745',   // Fully Established (Green)
+    ];
+
+    // Calculate percentages
+    var total = statusCounts.reduce(function(sum, count) {
+        return sum + count;
+    }, 0);
+    var percentages = statusCounts.map(function(count) {
+        return ((count / total) * 100).toFixed(2) + '%';
+    });
+
+    // Create the Chart.js pie chart
+    Chart.register(ChartDataLabels);
+    var ctx = document.getElementById('statusPieChart').getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusCounts,
+                backgroundColor: statusColors
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: false // Hide the default legend
+            },
+            plugins: {
+                datalabels: {
+                    display: true, // Display labels on each section
+                    color: 'white', // Color of the labels
+                    font: {
+                        size: 14 // Font size of the labels
+                    },
+                    formatter: function(value, context) {
+                        var index = context.dataIndex;
+                        return percentages[index];
+                    }
+                }
+            },
+            title: {
+                display: true,
+                text: 'Subcounty Status',
+                position: 'bottom',
+                fontSize: 16
+            }
+        }
+    });
+</script>
 
 <script>
+    var statusLabels = JSON.parse('{{ status_labels|safe }}');
+    var statusCounts = JSON.parse('{{ status_counts|safe }}');
+
+    // Define an array of custom color codes for each status
+    var statusColors = [
+        '#FF5733',   // Not Started (Red)
+        '#FFC107',   // In Progress (Blue)
+        '#28A745',   // Fully Established (Green)
+    ];
+
+    // Create the Chart.js bar chart
+    Chart.register(ChartDataLabels);
+    var ctx = document.getElementById('statusBarChart1').getContext('2d');
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusCounts,
+                backgroundColor: statusColors
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: false // Hide the default legend
+            },
+            plugins: {
+                datalabels: {
+                    display: true, // Display labels on each bar
+                    color: 'white', // Color of the labels
+                    font: {
+                        size: 14 // Font size of the labels
+                    },
+                    formatter: function(value, context) {
+                        var index = context.dataIndex;
+                        return percentages[index];
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true, // Start the y-axis at zero
+                    ticks: {
+                        stepSize: 1 // Define the step size for the y-axis
+                    }
+                }
+            },
+            title: {
+                display: true,
+                text: 'Subcounty Status',
+                position: 'bottom',
+                fontSize: 16
+            }
+        }
+    });
+</script>
+
+
+<script>
+    // Data for the donut chart (Partner Data)
+    var partnerData = {{ donor_partners|safe }};
+    
+    // Extract partner names and percentages from the data
+    var partnerNames = partnerData.map(function(item) { return item.name; });
+    var partnerPercentages = partnerData.map(function(item) { return parseFloat(item.percentage); });
+    
+    // Colors for the donut chart (you can customize these)
+    var donutColors = ['#007BFF', '#FF5733', '#33FF49', '#FF33EC', '#33FFEC']; // Add more colors as needed
+    
+    // Create the Chart.js donut chart for "Partner Data"
+    Chart.register(ChartDataLabels);
+    var ctxDonut = document.getElementById('donorpartnersDonut').getContext('2d');
+    var partnerDonutChart = new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+            labels: partnerNames,
+            datasets: [{
+                data: partnerPercentages,
+                backgroundColor: donutColors,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: true,
+                position: 'right',
+            },
+            title: {
+                display: true,
+                text: 'Partner Data',
+                position: 'bottom',
+                fontSize: 16,
+            },
+            plugins: {
+                datalabels: {
+                    display: true, // Display labels on each section
+                    color: 'white', // Color of the labels
+                    font: {
+                        size: 14 // Font size of the labels
+                    },
+                    formatter: function(value, context) {
+                        return value + '%'; // Format the label to include a percentage sign
+                    }
+                }
+            },
+        }
+    });
+</script>
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#county-search').on('input', function() {
+            // Get the search input value
+            var searchValue = $(this).val().toLowerCase();
+
+            // Filter the county list based on the search input
+            $('#county-list tr').each(function() {
+                var countyName = $(this).find('td:eq(1)').text().toLowerCase();
+                if (countyName.includes(searchValue)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+
+
+
+<script>
+    var partnerLabels = JSON.parse('{{ partner_labels|escapejs }}');
+    var partnerPercentages = JSON.parse('{{ partner_percentages|escapejs }}');
+
+    // Create the Chart.js pie chart
+    Chart.register(ChartDataLabels);
     var ctx = document.getElementById('partnerSupportPieChart').getContext('2d');
     var partnerSupportPieChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: JSON.parse('{{ partner_labels|escapejs }}'), // Parse the JSON data from Django template
+            labels: partnerLabels,
             datasets: [{
-                data: JSON.parse('{{ partner_percentages|escapejs }}'), // Parse the JSON data from Django template
+                data: partnerPercentages,
                 backgroundColor: ['#33FF45', '#FF5733'], // Define custom colors for "With Partners" and "Without Partners"
             }]
         },
@@ -327,17 +486,20 @@ var partnerSupportPieChart = new Chart(ctx, {
             },
             plugins: {
                 datalabels: {
-                    formatter: (value, context) => {
-                        return value + '%'; // Format the label to include a percentage sign
+                    display: true, // Display labels on each section
+                    color: 'white', // Color of the labels
+                    font: {
+                        size: 14 // Font size of the labels
                     },
-                    color: '#fff', // Text color
-                    anchor: 'end', // Position of the label relative to the data point (end for the end of the slice)
-                    align: 'start', // Position of the label text relative to the anchor (start for the start of the label)
-                },
+                    formatter: function(value, context) {
+                        return value + '%'; // Format the label to include a percentage sign
+                    }
+                }
             },
         }
     });
 </script>
+
 
 <script>
     var ctx = document.getElementById('statusBarChart').getContext('2d');
@@ -525,64 +687,135 @@ var partnerSupportPieChart = new Chart(ctx, {
 
 
 <script>
-  // Retrieve the JSON data from the context
-  var barChartData = {{ bar_chart_data_json|safe }};
-  
-  // Get the canvas element
-  var ctx = document.getElementById('subcountiesByStatusChart').getContext('2d');
-
-  // Define custom colors
-  var colors = ['red', 'yellow', 'green'];
-
-  // Create the bar chart
-  var myBarChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: barChartData.labels,
-      datasets: [{
-        label: 'Number of PCNs',
-        data: barChartData.data,
-        backgroundColor: colors,  // Use custom colors
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
-
-<script>
     // Retrieve the JSON data from the context
-    var pieChartData = {{ pie_chart_data_json|safe }};
-  
+    var barChartData = {{ bar_chart_data_json|safe }};
+    
     // Get the canvas element
-    var ctx = document.getElementById('partnerSubcountiesChart').getContext('2d');
+    var ctx = document.getElementById('subcountiesByStatusChart').getContext('2d');
   
-    // Create the pie chart
-    var myPieChart = new Chart(ctx, {
-      type: 'pie',
+    // Define custom colors
+    var colors = ['red', '#f8ac5a', '#2ac14e'];
+  
+    // Create the bar chart
+    var myBarChart = new Chart(ctx, {
+      type: 'bar',
       data: {
-        labels: pieChartData.labels,
+        labels: barChartData.labels,
         datasets: [{
-          data: pieChartData.data,
-          backgroundColor: pieChartData.backgroundColor,
+          label: 'Implementation progress',
+          data: barChartData.data,
+          backgroundColor: colors,  // Use custom colors
           borderWidth: 1
         }]
       },
       options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
         plugins: {
-          legend: {
-            display: true,
-            position: 'bottom',
+          datalabels: {
+            anchor: 'end',
+            align: 'top',
+            font: {
+              weight: 'bold'
+            },
+            formatter: function(value, context) {
+              return value + '%';  // Format data labels to include a percentage sign
+            }
           }
         }
       }
     });
   </script>
+
+
+
+<script>
+    // Retrieve the JSON data from the context
+    var pieChartData = {{ bar_chart_data_json|safe }};
+
+    // Get the canvas element for the pie chart
+    var pieCtx = document.getElementById('subcountiesByStatusPieChart').getContext('2d');
+
+    // Define custom colors for the pie chart
+    var pieColors = ['#2ac14e', '#f8ac5a', '#FF5733'];
+
+    // Create the pie chart
+    var myPieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: pieChartData.labels,
+            datasets: [{
+                data: pieChartData.data,
+                backgroundColor: pieColors,  // Use custom colors
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom', // Adjust the legend position as needed
+                },
+                datalabels: {
+                    formatter: function (value, context) {
+                        return value + '%';  // Format data labels to include a percentage sign
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+
+<script>
+    // Parse the JSON data for the pie chart
+    var pieChartData = JSON.parse('{{ pie_chart_data|escapejs }}');
+
+    // Get the canvas element
+    var ctx = document.getElementById('donorpartnerpiechart').getContext('2d');
+
+    // Create the pie chart
+    var statusPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: pieChartData.labels,
+            datasets: [{
+                data: pieChartData.data,
+                backgroundColor: pieChartData.backgroundColor,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: true,
+                position: 'right',
+            },
+            title: {
+                display: true,
+                text: 'Subcounty Status Distribution',
+                fontSize: 16,
+            },
+            plugins: {
+                datalabels: {
+                    display: true,
+                    color: 'white',
+                    font: {
+                        size: 14
+                    },
+                    formatter: function(value, context) {
+                        return value + '%';
+                    }
+                }
+            },
+        }
+    });
+</script>
+
+  
 </body>
 </html>

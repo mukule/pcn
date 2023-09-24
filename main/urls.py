@@ -14,6 +14,7 @@ urlpatterns = [
     path("graphs/", views.graphs, name="graphs"),
     path("partners/", views.partners, name="partners"),
     path('partners/<int:partner_id>/', views.partner_dashboard, name='partner_dashboard'),
+    path('donors/<int:donor_id>/', views.donor, name='donor'),
 
     
 ]

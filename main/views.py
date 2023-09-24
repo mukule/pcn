@@ -4,6 +4,7 @@ from django.db.models import Count, Q, F
 from django.core.paginator import *
 import json 
 from django.db.models import Count, Case, When, IntegerField
+from decimal import Decimal
 
 
 
@@ -156,19 +157,14 @@ def dashboard(request):
         page_counties = paginator.page(paginator.num_pages)
 
     # Prepare data for the first pie chart (Subcounty Status)
-    status_labels = ['Not Started', 'In Progress', 'Fully Established', 'Partner Support']
-    status_counts = [not_started_percentage, in_progress_percentage, fully_established_percentage, subcounties_with_partners_percentage]
+    status_labels = ['Not Started', 'In Progress', 'Fully Established']
+    status_counts = [not_started_percentage, in_progress_percentage, fully_established_percentage]
 
-    # Prepare data for the second pie chart (Subcounties with/without Partners)
-    subcounties_without_partners_percentage = 100.00 - subcounties_with_partners_percentage
-    partner_labels = ['With Partners', 'Without Partners']
-    partner_counts = [subcounties_with_partners_percentage, subcounties_without_partners_percentage]
 
     # Convert data to JSON
     status_labels_json = json.dumps(status_labels)
     status_counts_json = json.dumps(status_counts)
-    partner_labels_json = json.dumps(partner_labels)
-    partner_counts_json = json.dumps(partner_counts)
+    
 
     # Retrieve all pcns per county
     pcns_per_county = County.objects.all()
@@ -208,6 +204,8 @@ def dashboard(request):
         # If page is out of range (e.g., 9999), deliver last page
         partners_page = partners_paginator.page(partners_paginator.num_pages)
 
+    donors = Donor.objects.all()
+
     
 
 
@@ -230,9 +228,8 @@ def dashboard(request):
         'county_pcns': pcns_per_county_page,
         'status_labels': status_labels_json,
         'status_counts': status_counts_json,
-        'partner_labels': partner_labels_json,
-        'partner_counts': partner_counts_json,
         'partners': partners_page,
+        'donors': donors
         
     }
 
@@ -328,6 +325,44 @@ def county_dashboard(request, county_id, subcounty_id=None):
         # If page is out of range (e.g., 9999), deliver last page
         partners_page = partners_paginator.page(partners_paginator.num_pages)
 
+    partners = Partners.objects.filter(subcounty__county=county).annotate(subcounty_count=Count('subcounty'))
+
+    total_subcounties_count = Subcounty.objects.filter(county=county).count()
+
+    # Calculate the subcounties without partners percentage
+    subcounties_without_partners_count = total_subcounties_count - partner_support_count
+    subcounties_without_partners_percentage = 0.00
+
+    if total_subcounties_count > 0:
+        subcounties_without_partners_percentage = round((subcounties_without_partners_count / total_subcounties_count) * 100, 2)
+
+    # prepare data for the donut chart
+    partner_data = []
+
+    for partner in partners:
+        subcounty_count = partner.subcounty_count
+        if total_subcounties_count > 0:
+            percentage = Decimal(subcounty_count) / Decimal(total_subcounties_count) * 100
+            percentage = round(percentage, 2)  # Round to two decimal places
+        else:
+            percentage = Decimal('0.00')
+
+        # Convert Decimal percentage to string representation
+        percentage_str = str(percentage)
+
+        partner_data.append({'name': partner.name, 'percentage': percentage_str})
+
+    # Include subcounties without partners in the partner data
+    partner_data.append({'name': 'Without Partners', 'percentage': str(subcounties_without_partners_percentage)})
+
+    # Convert partner data to JSON format
+    partner_data_json = json.dumps(partner_data)
+
+    donors = Donor.objects.all()
+
+
+   
+
     context = {
         'county': county,
         'subcounties': subcounties,
@@ -346,7 +381,9 @@ def county_dashboard(request, county_id, subcounty_id=None):
         'status_percentages': json.dumps(status_percentages),  # Convert to JSON
         'partner_labels': json.dumps(partner_labels),  # Convert to JSON
         'partner_percentages': json.dumps(partner_percentages),  # Convert to JSON
-        'partners': partners_page
+        'partners': partners_page,
+        'partner_summery': partner_data_json,
+        'donors': donors
     }
 
     # Render the template and pass the relevant data to it
@@ -425,6 +462,9 @@ def map(request):
         # If page is out of range (e.g., 9999), deliver last page
         pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
 
+    donors = Donor.objects.all()
+
+
       
     context = {
         'counties': counties,
@@ -435,6 +475,7 @@ def map(request):
         'subcounties_with_partners_percentage':subcounties_with_partners_percentage,
         'partners': partners_page,
         'county_pcns': pcns_per_county_page,
+        'donors': donors
     }
     return render(request, 'main/map.html', context)
 
@@ -451,6 +492,9 @@ def county(request, county_id):
     percentage_fully_established = round((county.fully_established / total_subcounties) * 100, 1) if total_subcounties > 0 else 0.0
     percentage_partner_support = round((county.partner_support / total_subcounties) * 100, 1) if total_subcounties > 0 else 0.0
 
+    donors = Donor.objects.all()
+
+
     context = {
         'county': county,
         'counties': counties,
@@ -459,6 +503,7 @@ def county(request, county_id):
         'percentage_in_progress': percentage_in_progress,
         'percentage_fully_established': percentage_fully_established,
         'percentage_partner_support': percentage_partner_support,
+         'donors': donors
     }
     return render(request, 'main/county_map.html', context)
 
@@ -543,6 +588,8 @@ def graphs(request):
         # If page is out of range (e.g., 9999), deliver last page
         pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
 
+    donors = Donor.objects.all()
+
 
 
     context = {
@@ -561,7 +608,8 @@ def graphs(request):
         'partner_labels': json.dumps(partner_labels),  # Convert to JSON
         'partner_percentages': json.dumps(partner_percentages),  # Convert to JSON
         'partners': partners_page,
-        'county_pcns':pcns_per_county_page
+        'county_pcns':pcns_per_county_page,
+         'donors': donors
     }
 
     # Render the template and pass the relevant data to it
@@ -641,13 +689,16 @@ def partners(request):
         # If page is out of range (e.g., 9999), deliver last page
         pcns_per_county_page = pcns_per_county_paginator.page(pcns_per_county_paginator.num_pages)
 
+    donors = Donor.objects.all()
+
 
     context = {
         'partners_with_subcounty_count_json': data_json,
         'partner_labels': partner_labels_json,
         'partner_counts': partner_counts_json,
         'partners': partners_page,
-        'county_pcns':pcns_per_county_page
+        'county_pcns':pcns_per_county_page,
+        'donors': donors
     }
 
     return render(request, 'main/partners.html', context)
@@ -729,26 +780,13 @@ def partner_dashboard(request, partner_id):
     # Prepare data for the bar chart
     bar_chart_data = {
         'labels': ['Not Started', 'In Progress', 'Fully Established'],
-        'data': [not_started_count, in_progress_count, fully_established_count],
+        'data': [not_started_percentage, in_progress_percentage, fully_established_percentage],
+        
     }
-
-   
-     # Calculate the percentage supported by the partner
-    percentage_supported = 0.00
-    if all_subcounties > 0:
-        percentage_supported = round((total_subcounties_associated / all_subcounties) * 100, 2)
-
-    # Prepare data for the pie chart with percentages
-    pie_chart_data = {
-        'labels': ['Supported by Partner', 'Not Supported by Partner'],
-        'data': [percentage_supported, 100 - percentage_supported],  # Calculate the percentage not supported
-        'backgroundColor': ['green', 'red'],  # Green for supported, red for not supported
-    }
-
 
     # Convert the data to JSON
     bar_chart_data_json = json.dumps(bar_chart_data)
-    pie_chart_data_json = json.dumps(pie_chart_data)
+   
 
    # Retrieve all subcounties associated with this partner
     subcounties_associated = Subcounty.objects.filter(partners=partner)
@@ -769,6 +807,11 @@ def partner_dashboard(request, partner_id):
         # If page is out of range (e.g., 9999), deliver last page
         subcounties_page = subcounties_paginator.page(subcounties_paginator.num_pages)
 
+    donors = Donor.objects.all()
+
+
+
+
 
     # Create context data to pass to the template
     context = {
@@ -786,8 +829,95 @@ def partner_dashboard(request, partner_id):
         'subcounties_associated': subcounties_page,
         'county_pcns': pcns_per_county_page,
         'bar_chart_data_json': bar_chart_data_json,
-        'pie_chart_data_json': pie_chart_data_json,
+        'donors': donors,
+        
     }
 
     # Render the template and pass the relevant data to it
     return render(request, 'main/partner_dashboard.html', context)
+
+
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+def donor(request, donor_id):
+    # Retrieve the specific donor using its ID
+    donor = get_object_or_404(Donor, id=donor_id)
+
+    donors = Donor.objects.all()
+
+    # Retrieve the list of subcounties associated with the donor
+    subcounties = Subcounty.objects.filter(partners__donor=donor).distinct()
+
+    # Count the number of distinct subcounties associated with the donor
+    subcounties_count = subcounties.count()
+
+    # Count the number of subcounties in each status category
+    fully_established_count = subcounties.filter(status=2).count()
+    in_progress_count = subcounties.filter(status=1).count()
+    not_started_count = subcounties.filter(status=0).count()
+
+    # Calculate percentages
+    if subcounties_count > 0:
+        fully_established_percentage = round((fully_established_count / subcounties_count) * 100, 2)
+        in_progress_percentage = round((in_progress_count / subcounties_count) * 100, 2)
+        not_started_percentage = round((not_started_count / subcounties_count) * 100, 2)
+    else:
+        fully_established_percentage = 0.00
+        in_progress_percentage = 0.00
+        not_started_percentage = 0.00
+
+    # Pagination
+    paginator = Paginator(subcounties, 10)  # Paginate by 10 subcounties per page
+    page = request.GET.get('page')
+
+    try:
+        subcounties_page = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        subcounties_page = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page of results.
+        subcounties_page = paginator.page(paginator.num_pages)
+
+    # Query partners associated with the donor and annotate them with the count of associated subcounties
+    partners = Partners.objects.filter(subcounty__partners__donor=donor).annotate(subcounty_count=Count('subcounty'))
+
+    # Calculate the percentages of subcounties associated with each partner
+    partner_data = []
+    for partner in partners:
+        subcounty_count = partner.subcounty_count
+        if subcounties_count > 0:
+            partner_percentage = round((subcounty_count / subcounties_count) * 100, 2)
+        else:
+            partner_percentage = 0.00
+
+        partner_data.append({'name': partner.name, 'percentage': partner_percentage})
+
+    # Prepare data for the pie chart
+    pie_chart_data = {
+        'labels': ['Fully Established', 'In Progress', 'Not Started'],
+        'data': [fully_established_percentage, in_progress_percentage, not_started_percentage],
+        'backgroundColor': ['#2ac14e', '#f8ac5a', '#FF5733'],  # Add colors as needed
+    }
+
+    # Convert the pie chart data to JSON
+    pie_chart_data_json = json.dumps(pie_chart_data)
+
+    context = {
+        'donors': donors,
+        'donor': donor,
+        'pcns_list': subcounties_page,  # Include the paginated subcounties in the context
+        'pcns': subcounties_count,
+        'pcn_fully_established': fully_established_count,
+        'pcn_in_progress': in_progress_count,
+        'pcn_not_started': not_started_count,
+        'fully_established_percentage': fully_established_percentage,
+        'in_progress_percentage': in_progress_percentage,
+        'not_started_percentage': not_started_percentage,
+        'donor_partners': partner_data,
+        'pie_chart_data': pie_chart_data_json,
+    }
+
+    # Render the donor detail template and pass the donor object, paginated subcounties, status counts, partner data, and pie chart data
+    return render(request, 'main/donor.html', context)

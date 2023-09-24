@@ -29,13 +29,27 @@ class SubcountyForm(forms.ModelForm):
         }
 
 
-
 class PartnersForm(forms.ModelForm):
     class Meta:
         model = Partners
+        fields = ['name', 'donor']  # Add 'donor' field to the list of fields
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'donor': forms.Select(attrs={'class': 'form-control'}),  # Use a Select widget for the donor field
+            # Add widgets for additional fields as needed
+        }
+
+
+class DonorForm(forms.ModelForm):
+    class Meta:
+        model = Donor
         fields = ['name']  # Add more fields as needed
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             # Add widgets for additional fields as needed
         }
+
+
+
