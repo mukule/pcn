@@ -18,6 +18,7 @@ urlpatterns = [
     path('partners/edit/<int:partner_id>/', views.edit_partner, name='edit_partner'),
     path('edit-subcounty/<int:county_id>/<int:subcounty_id>/', views.edit_subcounty, name='edit_subcounty'),
     path('subcounties/<int:subcounty_id>/', views.subcounty, name='subcounty'),
+    path('partners/delete/<int:partner_id>/', views.delete_partner, name='delete_partner'),
    
    
 ]

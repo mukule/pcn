@@ -219,6 +219,19 @@ def edit_partner(request, partner_id):
     return render(request, 'phc/edit_partner.html', context)
 
 
+@login_required
+def delete_partner(request, partner_id):
+    # Retrieve the partner object using its ID or any other unique identifier
+    partner = get_object_or_404(Partners, id=partner_id)
+
+   
+    partner.delete()
+    messages.success(request, 'Partner deleted successfully.')
+    return redirect('phc:partners')  # Redirect to a view that lists partners
+
+   
+
+
 
 @login_required
 def subcounty(request, subcounty_id):

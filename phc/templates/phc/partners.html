@@ -25,6 +25,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Action</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,16 +37,19 @@
                                 <a href="{% url 'phc:edit_partner' partner.id %}">
                                     <i class="fas fa-pencil-alt"></i> Edit
                                 </a>
+                                    
                             </td>
+                            <td><a href="{% url 'phc:delete_partner' partner.id %}">
+                                <i class="fas fa-trash"></i> Delete
+                            </a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                
-                    
                 {% else %}
-                    <p>No partners available.</p>
+                <p>No partners available.</p>
                 {% endif %}
+                
                 <div class="col-12 text-center">
                     <a href="{% url 'phc:create_partner' %}" class="btn btn-primary">Add Partner</a>
                 </div>

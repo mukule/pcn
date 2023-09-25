@@ -732,24 +732,30 @@
 
 
 
+<!-- Add a canvas element for the donor pie chart -->
+
 <script>
-    // Retrieve the JSON data from the context
-    var pieChartData = {{ bar_chart_data_json|safe }};
+    // Retrieve the JSON data for donor data with percentages from the context
+    var donorChartData = {{ donor_subcounty_data_json|safe }};
 
-    // Get the canvas element for the pie chart
-    var pieCtx = document.getElementById('subcountiesByStatusPieChart').getContext('2d');
+    // Get the canvas element for the donor pie chart
+    var donorCtx = document.getElementById('donorPieChart').getContext('2d');
 
-    // Define custom colors for the pie chart
-    var pieColors = ['#2ac14e', '#f8ac5a', '#FF5733'];
+    // Create an array of custom colors for the donor pie chart (you can define more colors as needed)
+    var donorColors = ['#2ac14e', '#f8ac5a', '#FF5733', '#3474E7', '#FFC300'];
 
-    // Create the pie chart
-    var myPieChart = new Chart(pieCtx, {
+    // Create the donor pie chart
+    var donorPieChart = new Chart(donorCtx, {
         type: 'pie',
         data: {
-            labels: pieChartData.labels,
+            labels: donorChartData.map(function (data) {
+                return data.name;  // Use donor names as labels
+            }),
             datasets: [{
-                data: pieChartData.data,
-                backgroundColor: pieColors,  // Use custom colors
+                data: donorChartData.map(function (data) {
+                    return data.percentage;  // Use percentages as data values
+                }),
+                backgroundColor: donorColors,  // Use custom colors
                 borderWidth: 1
             }]
         },
@@ -768,6 +774,7 @@
         }
     });
 </script>
+
 
 
 

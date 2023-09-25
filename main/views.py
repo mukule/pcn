@@ -691,6 +691,28 @@ def partners(request):
 
     donors = Donor.objects.all()
 
+    donors_with_subcounty_count = Donor.objects.annotate(subcounty_count=Count('partners__subcounty')).all()
+
+    # Calculate the total number of subcounties
+    total_subcounties = Subcounty.objects.count()
+
+    # Create a list of dictionaries containing Donor names, Subcounty counts, and percentages
+    donor_data = []
+
+    for donor in donors_with_subcounty_count:
+        subcounty_count = donor.subcounty_count
+        percentage = (subcounty_count / total_subcounties) * 100 if total_subcounties > 0 else 0
+        donor_data.append({
+            'name': donor.name,
+            'subcounty_count': subcounty_count,
+            'percentage': round(percentage, 2)
+        })
+
+    # Convert the donor_data to JSON format
+    donor_data_json = json.dumps(donor_data)
+     
+    print(donor_data_json)
+
 
     context = {
         'partners_with_subcounty_count_json': data_json,
@@ -698,7 +720,8 @@ def partners(request):
         'partner_counts': partner_counts_json,
         'partners': partners_page,
         'county_pcns':pcns_per_county_page,
-        'donors': donors
+        'donors': donors,
+        'donor_subcounty_data_json': donor_data_json,
     }
 
     return render(request, 'main/partners.html', context)
